@@ -3,15 +3,27 @@
 #include "bsp_dwt.h"
 #include "ICM42688_Middleware.h"
 #include "ICM42688_reg.h"
-
-static float accSensitivity = 0.244f; // 加速度的最小分辨率 mg/LSB
-static float gyroSensitivity = 32.8f; // 陀螺仪的最小分辨率
-
+#include "cmsis_os.h"
+//ICM42688_read_single_reg(reg,&(data));    
+#define gNORM 9.69293118f
+#define BMI088_GYRO_2000_SEN 0.00106526443603169529841533860381f
+float accSensitivity = 0.244f; // 加速度的最小分辨率 mg/LSB
+float gyroSensitivity = 32.8f; // 陀螺仪的最小分辨率
+float BMI088_AccelScale = 9.783f;
 static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
 static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
 static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
 
-#define ICM42688DelayMs(ms) DWT_Delay(ms/1000.0f);
+   uint8_t buffer1[6] = {0};
+   uint8_t buffer2[6] = {0}; 
+uint8_t reg_val;
+uint8_t init_flag;
+IMU_Data_t IMU_Data;
+   
+int16_t temp;
+//#define ICM42688DelayMs(ms) DWT_Delay(ms/1000.0f);
+
+#define ICM42688DelayMs(ms) HAL_Delay(ms);
 
 #define ICM_SPI_CS_LOW() HAL_GPIO_WritePin(CS_PIN_GPIO_Port, CS_PIN_Pin, GPIO_PIN_RESET)
 
@@ -24,10 +36,10 @@ static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
         ICM_SPI_CS_HIGH();                        \
     }
 
-#define ICM42688_READ_SINGLE_REG(reg, data)      \
+#define ICM42688_READ_SINGLE_REG(reg,data)      \
     {                                            \
         ICM_SPI_CS_LOW();                        \
-				ICM42688_read_single_reg(reg,&(data));      \
+        ICM42688_read_single_reg(reg,&data);      \
         ICM_SPI_CS_HIGH();                       \
     }
 
@@ -41,8 +53,10 @@ static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
 
 int16_t ICM42688_init(void)
 {
-    uint8_t reg_val = 0;
+//    uint8_t reg_val = 0;
     /* 读取 who am i 寄存器 */
+    ICM42688_READ_SINGLE_REG(ICM42688_WHO_AM_I, reg_val);
+    ICM42688_READ_MULI_REG(ICM42688_WHO_AM_I,&reg_val,1);
     ICM42688_READ_SINGLE_REG(ICM42688_WHO_AM_I, reg_val);
     // printf("reg_val:%d\n",reg_val);
     ICM42688_WRITE_SINGLE_REG(ICM42688_REG_BANK_SEL, 0);    // 设置bank 0区域寄存器
@@ -74,18 +88,18 @@ int16_t ICM42688_init(void)
         reg_val |= (1 << 2); // FIFO_THS_INT1_ENABLE
         ICM42688_WRITE_SINGLE_REG(ICM42688_INT_SOURCE0, reg_val);
 
-        bsp_Icm42688GetAres(AFS_8G);
+        bsp_Icm42688GetAres(AFS_16G);
         ICM42688_WRITE_SINGLE_REG(ICM42688_REG_BANK_SEL, 0x00);
         ICM42688_READ_SINGLE_REG(ICM42688_ACCEL_CONFIG0, reg_val); // page74
-        reg_val |= (AFS_8G << 5);                                  // 量程 ±8g
-        reg_val |= (AODR_1000Hz);                                  // 输出速率 50HZ
+        reg_val |= (AFS_16G << 5);                                  // 量程 ±8g
+        reg_val |= (AODR_2000Hz);                                    // 输出速率 1000HZ
         ICM42688_WRITE_SINGLE_REG(ICM42688_ACCEL_CONFIG0, reg_val);
 
-        bsp_Icm42688GetGres(GFS_1000DPS);
+        bsp_Icm42688GetGres(GFS_2000DPS);
         ICM42688_WRITE_SINGLE_REG(ICM42688_REG_BANK_SEL, 0x00);
         ICM42688_READ_SINGLE_REG(ICM42688_GYRO_CONFIG0, reg_val); // page73
-        reg_val |= (GFS_1000DPS << 5);                            // 量程 ±1000dps
-        reg_val |= (AODR_1000Hz);                                 // 输出速率 50HZ
+        reg_val |= (GFS_2000DPS << 5);                            // 量程 ±1000dps
+        reg_val |= (AODR_2000Hz);                                 // 输出速率 1000HZ
         ICM42688_WRITE_SINGLE_REG(ICM42688_GYRO_CONFIG0, reg_val);
 
         ICM42688_WRITE_SINGLE_REG(ICM42688_REG_BANK_SEL, 0x00);
@@ -96,12 +110,13 @@ int16_t ICM42688_init(void)
         ICM42688_WRITE_SINGLE_REG(ICM42688_PWR_MGMT0, reg_val);
         
         ICM42688DelayMs(1); // 操作完PWR—MGMT0寄存器后 200us内不能有任何读写寄存器的操作
-
-        return 0;
+        
+        init_flag = 1;
+        return 1;
     }
 		else
 			
-    return -1;
+    return 0;
 }
 
 /*******************************************************************************
@@ -115,31 +130,61 @@ int16_t ICM42688_init(void)
 * 修改日期：
 * 备    注： datasheet page62,63
 *******************************************************************************/
-void bsp_IcmGetRawData(IMU_Data_t ICM42688)
+void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
 {
-    uint8_t buffer[12] = {0};
+//   uint8_t buffer1[6] = {0};
+//   uint8_t buffer2[6] = {0}; 
+    int16_t Accel[3];
+    int16_t Gyro[3];
+    ICM42688_READ_MULI_REG(ICM42688_ACCEL_DATA_X1, buffer1, 6);
+    ICM42688_READ_MULI_REG(ICM42688_GYRO_DATA_X1, buffer2, 6);
+    
+    Accel[0]=   ((uint16_t)buffer1[0] << 8)  | buffer1[1];
+    Accel[1]  = ((uint16_t)buffer1[2] << 8)  | buffer1[3];
+    Accel[2]  = ((uint16_t)buffer1[4] << 8)  | buffer1[5];
+   
+    Gyro[0]   = ((uint16_t)buffer2[0] << 8)  | buffer2[1];
+    Gyro[1]  = ((uint16_t)buffer2[2] << 8)  | buffer2[3];
+    Gyro[2]  = ((uint16_t)buffer2[4] << 8)  | buffer2[5];
 
-    ICM42688_READ_MULI_REG(ICM42688_ACCEL_DATA_X1, buffer, 12);
+//     ICM42688->Accel[0] = (int16_t)( Accel[0] * accSensitivity);
+//     ICM42688->Accel[1] = (int16_t)( Accel[1] * accSensitivity);
+//     ICM42688->Accel[2] = (int16_t)( Accel[2] * accSensitivity);
 
-    ICM42688.Accel[0]= ((uint16_t)buffer[0] << 8)  | buffer[1];
-    ICM42688.Accel[1]  = ((uint16_t)buffer[2] << 8)  | buffer[3];
-    ICM42688.Accel[2]  = ((uint16_t)buffer[4] << 8)  | buffer[5];
-    ICM42688.Gyro[0] = ((uint16_t)buffer[6] << 8)  | buffer[7];
-    ICM42688.Gyro[1] = ((uint16_t)buffer[8] << 8)  | buffer[9];
-    ICM42688.Gyro[2] = ((uint16_t)buffer[10] << 8) | buffer[11];
+//    ICM42688->Gyro[0] = (int16_t)(Gyro[0] * gyroSensitivity);
+//    ICM42688->Gyro[1] = (int16_t)(Gyro[1] * gyroSensitivity);
+//    ICM42688->Gyro[2] = (int16_t)(Gyro[2] * gyroSensitivity);
 
+     ICM42688->Accel[0] = ( Accel[0] * accSensitivity* BMI088_AccelScale);
+     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* BMI088_AccelScale);
+     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* BMI088_AccelScale);
 
-     ICM42688.Accel[0] = (int16_t)( ICM42688.Accel[0]* accSensitivity);
-     ICM42688.Accel[1] = (int16_t)( ICM42688.Accel[1] * accSensitivity);
-     ICM42688.Accel[2] = (int16_t)( ICM42688.Accel[2] * accSensitivity);
-
-    ICM42688.Gyro[0] = (int16_t)(ICM42688.Gyro[0] * gyroSensitivity);
-    ICM42688.Gyro[1] = (int16_t)(ICM42688.Gyro[1] * gyroSensitivity);
-    ICM42688.Gyro[2] = (int16_t)(ICM42688.Gyro[2] * gyroSensitivity);
+    ICM42688->Gyro[0] = (Gyro[0] * gyroSensitivity);
+    ICM42688->Gyro[1] = (Gyro[1] * gyroSensitivity);
+    ICM42688->Gyro[2] = (Gyro[2] * gyroSensitivity);
 
 }
 
+/*******************************************************************************
+* 名    称： bsp_IcmGetTemperature
+* 功    能： 读取Icm42688 内部传感器温度
+* 入口参数： 无
+* 出口参数： 无
+* 作　　者： Baxiange
+* 创建日期： 2022-07-25
+* 修    改：
+* 修改日期：
+* 备    注： datasheet page62
+*******************************************************************************/
+int8_t bsp_IcmGetTemperature(int16_t* pTemp)
+{
+    uint8_t buffer[2] = {0};
 
+    ICM42688_READ_MULI_REG(ICM42688_TEMP_DATA1, buffer, 2);
+
+    *pTemp = (int16_t)(((int16_t)((buffer[0] << 8) | buffer[1])) / 132.48 + 25);
+    return 0;
+}
 
 static void ICM42688_write_single_reg(uint8_t reg, uint8_t data)
 {
@@ -160,8 +205,9 @@ static void ICM42688_write_single_reg(uint8_t reg, uint8_t data)
  *******************************************************************************/
 static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data)
 {
-		ICM42688_read_write_byte(reg | 0x80);//表示读取，最高位为读写位
-    *return_data = ICM42688_read_write_byte(0);
+     uint8_t regval = 0xff;
+	 ICM42688_read_write_byte(reg | 0x80);//表示读取，最高位为读写位
+     *return_data = ICM42688_read_write_byte(regval);
 }
 
 /*******************************************************************************
@@ -178,11 +224,11 @@ static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data)
 static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len)
 {
     uint8_t i = 0;
-    //    ICM42688_read_write_byte(reg | 0x80);
+//    ICM42688_read_write_byte(reg | 0x80);
     for (i = 0; i < len; i++)
     {
 
-        *buf = ICM42688_read_write_byte(0x55);
+        *buf = ICM42688_read_write_byte(*buf);
         buf++;
     }
 }
@@ -194,16 +240,16 @@ float bsp_Icm42688GetAres(uint8_t Ascale)
     // Possible accelerometer scales (and their register bit settings) are:
     // 2 Gs (11), 4 Gs (10), 8 Gs (01), and 16 Gs  (00).
     case AFS_2G:
-        accSensitivity = 2000 / 32768.0f;
+        accSensitivity = 2 / 32768.0f;
         break;
     case AFS_4G:
-        accSensitivity = 4000 / 32768.0f;
+        accSensitivity = 4 / 32768.0f;
         break;
     case AFS_8G:
-        accSensitivity = 8000 / 32768.0f;
+        accSensitivity = 8 / 32768.0f;
         break;
     case AFS_16G:
-        accSensitivity = 16000 / 32768.0f;
+        accSensitivity = 16 / 32768.0f;
         break;
     }
 
@@ -236,7 +282,8 @@ float bsp_Icm42688GetGres(uint8_t Gscale)
         gyroSensitivity = 1000.0f / 32768.0f;
         break;
     case GFS_2000DPS:
-        gyroSensitivity = 2000.0f / 32768.0f;
+//        gyroSensitivity = 2000.0f / 32768.0f;
+		   gyroSensitivity  = BMI088_GYRO_2000_SEN;
         break;
     }
     return gyroSensitivity;

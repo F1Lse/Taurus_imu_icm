@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ICM42688_driver.h"
 
 /* USER CODE END Includes */
 
@@ -108,7 +109,14 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+//      if(!init_flag)    
+//      ICM42688_init();
+//      else
+      
+//      if(init_flag)
+//      bsp_IcmGetRawData(&IMU_Data);
+      
+    osDelay(5);
   }
   /* USER CODE END StartDefaultTask */
 }
