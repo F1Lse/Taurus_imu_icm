@@ -6,6 +6,21 @@
 
 
 
+#define G_ACC  9.81f
+
+
+#define LSB_ACC_16G		0.0047856934f
+#define LSB_ACC_8G		0.0023928467f
+#define LSB_ACC_4G		0.0011964233f
+#define LSB_ACC_2G		0.00059821167f
+
+/*Turn Into Radian*/
+#define LSB_GYRO_2000_R	0.0010652644f
+#define LSB_GYRO_1000_R	0.00053263222f
+#define LSB_GYRO_500_R	0.00026631611f
+#define LSB_GYRO_250_R	0.00013315805f
+#define LSB_GYRO_125D_R	0.000066579027f
+
 typedef struct
 {
     float Accel[3];
@@ -19,6 +34,9 @@ typedef struct
     float GyroOffset[3];
 
     float gNorm;
+	
+	  float Calidata[4];
+	
 } IMU_Data_t;
 
 

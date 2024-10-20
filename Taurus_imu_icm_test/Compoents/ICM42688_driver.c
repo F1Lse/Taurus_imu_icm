@@ -3,46 +3,27 @@
 #include "bsp_dwt.h"
 #include "ICM42688_Middleware.h"
 #include "ICM42688_reg.h"
-#include "cmsis_os.h"
-#include "bsp_dwt.h"
+#include "bsp_imu.h"
 
 
-
-/*G = 9.8011 in Dalian*/
-#define LSB_ACC_16G		0.0047856934f
-#define LSB_ACC_8G		0.0023928467f
-#define LSB_ACC_4G		0.0011964233f
-#define LSB_ACC_2G		0.00059821167f
-
-/*Turn Into Radian*/
-#define LSB_GYRO_2000_R	0.0010652644f
-#define LSB_GYRO_1000_R	0.00053263222f
-#define LSB_GYRO_500_R	0.00026631611f
-#define LSB_GYRO_250_R	0.00013315805f
-#define LSB_GYRO_125D_R	0.000066579027f
-
-
-
-extern uint8_t califlag;
-
-
-//ICM42688_read_single_reg(reg,&(data));    
-#define BMI088_GYRO_2000_SEN 0.00106526443603169529841533860381f
-float accSensitivity = 0.244f; // 加速度的最小分辨率 mg/LSB
-float gyroSensitivity = 32.8f; // 陀螺仪的最小分辨率
-float GG = 9.81f;
-static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
-static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
-static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
-
-   uint8_t buffer1[6] = {0};
-   uint8_t buffer2[6] = {0}; 
 uint8_t reg_val;
 uint8_t init_flag;
 IMU_Data_t IMU_Data;
    
 int16_t temp;
-//#define ICM42688DelayMs(ms) DWT_Delay(ms/1000.0f);
+
+
+
+
+
+float accSensitivity ;// 加速计灵敏度
+float gyroSensitivity ;// 角速度计灵敏度
+
+
+static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
+static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
+static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
+
 
 #define ICM42688DelayMs(ms) HAL_Delay(ms);
 
@@ -123,36 +104,36 @@ int16_t ICM42688_init(void)
         reg_val |= (AODR_1000Hz);                                 // 输出速率 1000HZ
         ICM42688_WRITE_SINGLE_REG(ICM42688_GYRO_CONFIG0, reg_val);
 				
+									
+				/*****抗混叠滤波器@536Hz*****/
 					
-/*****抗混叠滤波器@536Hz*****/
-	
-	/*GYRO抗混叠滤波器配置*/
-	/*指定Bank1*/
-	ICM42688_WRITE_SINGLE_REG(0x76,0x01);
-	/*GYRO抗混叠滤波器配置*/
-	ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
-	ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
-	ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
-	ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
-	
-	/*ACCEL抗混叠滤波器配置*/
-	/*指定Bank2*/
-ICM42688_WRITE_SINGLE_REG(0x76,0x02);
-	/*ACCEL抗混叠滤波器配置*/
-ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
-ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
-ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
+					/*GYRO抗混叠滤波器配置*/
+					/*指定Bank1*/
+					ICM42688_WRITE_SINGLE_REG(0x76,0x01);
+					/*GYRO抗混叠滤波器配置*/
+					ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
+					ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
+					ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
+					ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
+					
+					/*ACCEL抗混叠滤波器配置*/
+					/*指定Bank2*/
+				ICM42688_WRITE_SINGLE_REG(0x76,0x02);
+					/*ACCEL抗混叠滤波器配置*/
+				ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
+				ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
+				ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
 
-/*****自定义滤波器1号@111Hz*****/
+				/*****自定义滤波器1号@111Hz*****/
 
-	/*指定Bank0*/
-ICM42688_WRITE_SINGLE_REG(0x76,0x00);
-	/*滤波器顺序*/
-ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
-ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
-	/*滤波器设置*/
-ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
-	
+					/*指定Bank0*/
+				ICM42688_WRITE_SINGLE_REG(0x76,0x00);
+					/*滤波器顺序*/
+				ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
+				ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
+					/*滤波器设置*/
+				ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
+					
 	
 
         ICM42688_WRITE_SINGLE_REG(ICM42688_REG_BANK_SEL, 0x00);
@@ -185,8 +166,9 @@ ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
 *******************************************************************************/
 void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
 {
-//   uint8_t buffer1[6] = {0};
-//   uint8_t buffer2[6] = {0}; 
+		
+    uint8_t buffer1[6] = {0};
+	  uint8_t buffer2[6] = {0}; 
     int16_t Accel[3];
     int16_t Gyro[3];
     ICM42688_READ_MULI_REG(ICM42688_ACCEL_DATA_X1, buffer1, 6);
@@ -200,33 +182,24 @@ void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
     Gyro[1]  = ((uint16_t)buffer2[2] << 8)  | buffer2[3];
     Gyro[2]  = ((uint16_t)buffer2[4] << 8)  | buffer2[5];
 
-//     ICM42688->Accel[0] = (int16_t)( Accel[0] * accSensitivity);
-//     ICM42688->Accel[1] = (int16_t)( Accel[1] * accSensitivity);
-//     ICM42688->Accel[2] = (int16_t)( Accel[2] * accSensitivity);
-
-//    ICM42688->Gyro[0] = (int16_t)(Gyro[0] * gyroSensitivity);
-//    ICM42688->Gyro[1] = (int16_t)(Gyro[1] * gyroSensitivity);
-//    ICM42688->Gyro[2] = (int16_t)(Gyro[2] * gyroSensitivity);
 		
 		if(califlag)
-    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* GG * ICM42688->AccelScale);
-     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* GG * ICM42688->AccelScale);
-     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* GG * ICM42688->AccelScale);}
+    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* G_ACC * ICM42688->AccelScale);
+     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* G_ACC * ICM42688->AccelScale);
+     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* G_ACC * ICM42688->AccelScale);}
 			
 		
 		else			
-    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* GG);
-     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* GG);
-     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* GG);}
+    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* G_ACC);
+     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* G_ACC);
+     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* G_ACC);}
 
 
     ICM42688->Gyro[0] = (Gyro[0] * gyroSensitivity - ICM42688->GyroOffset[0]);
     ICM42688->Gyro[1] = (Gyro[1] * gyroSensitivity - ICM42688->GyroOffset[1]);
     ICM42688->Gyro[2] = (Gyro[2] * gyroSensitivity - ICM42688->GyroOffset[2]);
 	
-//	    ICM42688->Gyro[0] = (Gyro[0] * gyroSensitivity );
-//    ICM42688->Gyro[1] = (Gyro[1] * gyroSensitivity );
-//    ICM42688->Gyro[2] = (Gyro[2] * gyroSensitivity );
+
 
 }
 

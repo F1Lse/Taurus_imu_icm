@@ -21,6 +21,8 @@ typedef enum{
 #define X_axis 0
 #define Y_axis 1
 #define Z_axis 2
+#define Accel_c 3
+
 
 typedef enum{
    Calibration_error_mode,
@@ -55,9 +57,9 @@ typedef struct
 
 /***************/
 extern imu_mode_e imu_mode;
+extern uint8_t califlag;//初始化标志位
 
 
-void IMU_Values_Convert(void);
 void Calibrate_MPU_Offset(IMU_Data_t *ICM42688);
 
 void IMU_AHRS_Calcu_task(void);

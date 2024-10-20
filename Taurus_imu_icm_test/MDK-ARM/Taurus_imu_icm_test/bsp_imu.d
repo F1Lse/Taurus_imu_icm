@@ -31,6 +31,8 @@
 .\taurus_imu_icm_test\bsp_imu.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\bsp_imu.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\bsp_imu.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 .\taurus_imu_icm_test\bsp_imu.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\taurus_imu_icm_test\bsp_imu.o: ../Compoents/ICM42688_driver.h
 .\taurus_imu_icm_test\bsp_imu.o: ../mathlib/KalmanFilter.h
@@ -44,3 +46,6 @@
 .\taurus_imu_icm_test\bsp_imu.o: ../mathlib/kalman_filter.h
 .\taurus_imu_icm_test\bsp_imu.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\taurus_imu_icm_test\bsp_imu.o: ..\Bsp\bsp_dwt.h
+.\taurus_imu_icm_test\bsp_imu.o: ../mathlib/pid.h
+.\taurus_imu_icm_test\bsp_imu.o: ..\Bsp\bsp_PWM.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Core/Inc/tim.h

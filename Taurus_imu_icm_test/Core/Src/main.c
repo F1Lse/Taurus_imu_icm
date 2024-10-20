@@ -18,8 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "spi.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -27,6 +27,8 @@
 #include "bsp_dwt.h"
 #include "ICM42688_driver.h"
 #include "bsp_imu.h"
+#include "bsp_flash.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -36,6 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+//#define Calibrate //操作此宏定义是否校准
 
 /* USER CODE END PD */
 
@@ -53,7 +57,6 @@ extern uint8_t califlag;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -93,28 +96,30 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init(170);
    ICM42688_init();
   HAL_Delay(100);
-//	Calibrate_MPU_Offset(&IMU_Data);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 	
+#ifdef Calibrate
+	Calibrate_MPU_Offset(&IMU_Data);
 	
-	IMU_Data.GyroOffset[X_axis] = 0.00992829725f;
-	IMU_Data.GyroOffset[Y_axis] = -0.0158658028f;
-	IMU_Data.GyroOffset[Z_axis] = 0.00883018691f;
-	IMU_Data.AccelScale = 1.01208675f;
-	califlag = 1;
+	imu_flash_write(IMU_Data.Calidata,4);
+		
+#else	
+	float Bias[4];
+	imu_flash_read(Bias,4);
+
+  memcpy(IMU_Data.GyroOffset,Bias,3*sizeof(float));
+	IMU_Data.AccelScale = Bias[3];
+	
+#endif		
+
 	HAL_Delay(100);
+
   /* USER CODE END 2 */
-
-  /* Call init function for freertos objects (in cmsis_os2.c) */
-//  MX_FREERTOS_Init();
-
-//  /* Start scheduler */
-//  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -123,6 +128,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		static uint32_t led_count;
+		
 		    if(!init_flag)    
       ICM42688_init();
       else
@@ -130,8 +137,10 @@ int main(void)
       if(init_flag)
       IMU_AHRS_Calcu_task();
 		
-			DWT_Delay(0.001);
+			HAL_Delay(1);
 		
+			if(	led_count++ % 250 == 0)
+			HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
 		
   }
   /* USER CODE END 3 */
@@ -157,8 +166,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
-  RCC_OscInitStruct.PLL.PLLN = 85;
+  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
+  RCC_OscInitStruct.PLL.PLLN = 21;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -185,6 +194,27 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM2 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM2) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

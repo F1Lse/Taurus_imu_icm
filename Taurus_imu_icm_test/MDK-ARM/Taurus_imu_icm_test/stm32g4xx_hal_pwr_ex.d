@@ -29,3 +29,5 @@
 .\taurus_imu_icm_test\stm32g4xx_hal_pwr_ex.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\stm32g4xx_hal_pwr_ex.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\stm32g4xx_hal_pwr_ex.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
+.\taurus_imu_icm_test\stm32g4xx_hal_pwr_ex.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
+.\taurus_imu_icm_test\stm32g4xx_hal_pwr_ex.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h

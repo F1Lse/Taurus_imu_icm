@@ -31,6 +31,8 @@
 .\taurus_imu_icm_test\quaternionekf.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\quaternionekf.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\quaternionekf.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
+.\taurus_imu_icm_test\quaternionekf.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
+.\taurus_imu_icm_test\quaternionekf.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 .\taurus_imu_icm_test\quaternionekf.o: ../dsp/Include/arm_math.h
 .\taurus_imu_icm_test\quaternionekf.o: ../Drivers/CMSIS/Include/core_cm4.h
 .\taurus_imu_icm_test\quaternionekf.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
