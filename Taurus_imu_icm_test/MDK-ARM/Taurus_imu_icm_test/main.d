@@ -30,8 +30,6 @@
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
-.\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
-.\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 .\taurus_imu_icm_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 .\taurus_imu_icm_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/FreeRTOSConfig.h
@@ -48,7 +46,7 @@
 .\taurus_imu_icm_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/spi.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/gpio.h
-.\taurus_imu_icm_test\main.o: ..\Bsp\bsp_dwt.h
+.\taurus_imu_icm_test\main.o: ../Bsp/bsp_dwt.h
 .\taurus_imu_icm_test\main.o: ../Compoents/ICM42688_driver.h
-.\taurus_imu_icm_test\main.o: ..\Bsp\bsp_imu.h
+.\taurus_imu_icm_test\main.o: ../Bsp/bsp_imu.h
 .\taurus_imu_icm_test\main.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

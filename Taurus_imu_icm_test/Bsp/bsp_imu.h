@@ -3,6 +3,13 @@
 
 #include "main.h"
 #include "math.h"
+#include "ICM42688_driver.h"
+
+#define gNORM 10.25f
+#define GxOFFSET 0.00247530174f
+#define GyOFFSET 0.000393082853f
+#define GzOFFSET 0.000393082853f
+
 typedef enum{
    hight_temperature,
 	 normal,
@@ -14,6 +21,11 @@ typedef enum{
 #define X_axis 0
 #define Y_axis 1
 #define Z_axis 2
+
+typedef enum{
+   Calibration_error_mode,
+	 Calibration_successful_mode
+}bias_gyro_mode_e;
 
 typedef struct
 {
@@ -43,8 +55,10 @@ typedef struct
 
 /***************/
 extern imu_mode_e imu_mode;
-void IMU_Values_Convert(void);
 
+
+void IMU_Values_Convert(void);
+void Calibrate_MPU_Offset(IMU_Data_t *ICM42688);
 
 void IMU_AHRS_Calcu_task(void);
 void BodyFrameToEarthFrame(const float *vecBF, float *vecEF, float *q);

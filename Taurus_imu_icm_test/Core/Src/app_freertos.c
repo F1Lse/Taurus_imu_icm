@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "ICM42688_driver.h"
-
+#include "bsp_imu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,11 +112,11 @@ void StartDefaultTask(void const * argument)
 //      if(!init_flag)    
 //      ICM42688_init();
 //      else
-      
+//      
 //      if(init_flag)
-//      bsp_IcmGetRawData(&IMU_Data);
+//      IMU_AHRS_Calcu_task();
       
-    osDelay(5);
+    osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
 }

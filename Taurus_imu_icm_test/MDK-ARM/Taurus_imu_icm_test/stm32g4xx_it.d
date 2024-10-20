@@ -30,6 +30,13 @@
 .\taurus_imu_icm_test\stm32g4xx_it.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\stm32g4xx_it.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\stm32g4xx_it.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
-.\taurus_imu_icm_test\stm32g4xx_it.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
-.\taurus_imu_icm_test\stm32g4xx_it.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 .\taurus_imu_icm_test\stm32g4xx_it.o: ../Core/Inc/stm32g4xx_it.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Core/Inc/FreeRTOSConfig.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+.\taurus_imu_icm_test\stm32g4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

@@ -19,7 +19,7 @@
 #define BMI088_ACCEL_6G_SEN 0.00179443359375f
 
 
-
+bias_gyro_mode_e bias_gyro_mode;
 imu_mode_e imu_mode;
 //#define Kp 1.35f    // proportional gain governs rate of convergence to accelerometer/magnetometer
 //#define Ki 0.002f   // integral gain governs rate of convergence of gyroscope biases
@@ -47,7 +47,10 @@ volatile uint32_t lastUpdate, now; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½Î» 
 float pitch_angle_test,kf2_pitch_angle;
 float *kf2_pitch;
 
+float gyroDiff[3], gNormDiff;
+int16_t caliCount = 0;
 
+uint8_t califlag = 0;
 /**
   * @brief IMU_Values_Convert
   * @param 
@@ -100,10 +103,9 @@ void IMU_AHRS_Calcu_task(void){
 		bsp_IcmGetRawData(&IMU_Data);
 		
     const float gravity[3] = {0, 0, 9.7833f};
-//		dt = DWT_GetDeltaT(&INS_DWT_Count);
-//    t += dt;
-		dt = 0.001f;
+		dt = DWT_GetDeltaT(&INS_DWT_Count);
     t += dt;
+
 		
 		INS.AccelLPF = 0.01f;
 		
@@ -115,7 +117,7 @@ void IMU_AHRS_Calcu_task(void){
         INS.Gyro[Z_axis] = IMU_Data.Gyro[Z_axis];
 
               // demo function,ç”¨äºŽä¿®æ­£å®‰è£…è¯¯å·®,å¯ä»¥ä¸ç®¡,æœ¬demoæš‚æ—¶æ²¡ç”¨
-        // IMU_Param_Correction(&IMU_Param, INS.Gyro, INS.Accel);
+//         IMU_Param_Correction(&IMU_Param, INS.Gyro, INS.Accel);
 
         // è®¡ç®—é‡åŠ›åŠ é€Ÿåº¦çŸ¢é‡å’Œbç³»çš„XYä¸¤è½´çš„å¤¹è§’,å¯ç”¨ä½œåŠŸèƒ½æ‰©å±•,æœ¬demoæš‚æ—¶æ²¡ç”¨
         INS.atanxz = -atan2f(INS.Accel[X_axis], INS.Accel[Z_axis]) * 180 / PI;
@@ -188,4 +190,186 @@ void EarthFrameToBodyFrame(const float *vecEF, float *vecBF, float *q)
     vecBF[2] = 2.0f * ((q[1] * q[3] + q[0] * q[2]) * vecEF[0] +
                        (q[2] * q[3] - q[0] * q[1]) * vecEF[1] +
                        (0.5f - q[1] * q[1] - q[2] * q[2]) * vecEF[2]);
+}
+
+//void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
+//{
+//    static float startTime;
+//    static uint16_t CaliTimes = 6000; // ÐèÒª×ã¹»¶àµÄÊý¾Ý²ÅÄÜµÃµ½ÓÐÐ§ÍÓÂÝÒÇÁãÆ«Ð£×¼½á¹û
+////    uint8_t buf[6] = {0, 0, 0, 0, 0, 0};
+//    int16_t bmi088_raw_temp;
+//    float gyroMax[3], gyroMin[3];
+//    float gNormTemp, gNormMax, gNormMin;
+
+//    startTime = DWT_GetTimeline_s();
+////		 startTime = HAL_GetTick();
+//    do
+//    {
+//        if (DWT_GetTimeline_s()  - startTime >  10)
+//        {
+//            // æ ¡å‡†è¶…æ—¶
+//            ICM42688->GyroOffset[0] = GxOFFSET;
+//            ICM42688->GyroOffset[1] = GyOFFSET;
+//            ICM42688->GyroOffset[2] = GzOFFSET;
+//            ICM42688->gNorm = gNORM;
+//            ICM42688->TempWhenCali = 40;
+//            break;
+//        }
+
+//        DWT_Delay(0.005);
+////				 HAL_Delay(5);
+//        ICM42688->gNorm = 0;
+//        ICM42688->GyroOffset[0] = 0;
+//        ICM42688->GyroOffset[1] = 0;
+//        ICM42688->GyroOffset[2] = 0;
+
+//        for (uint16_t i = 0; i < CaliTimes; i++)
+//        {
+//				  	bsp_IcmGetRawData(ICM42688);
+//					
+//					
+//            gNormTemp = sqrtf(ICM42688->Accel[0] * ICM42688->Accel[0] +
+//                              ICM42688->Accel[1] * ICM42688->Accel[1] +
+//                              ICM42688->Accel[2] * ICM42688->Accel[2]);
+//            ICM42688->gNorm += gNormTemp;
+
+
+
+//                ICM42688->GyroOffset[0] += ICM42688->Gyro[0];
+
+//                ICM42688->GyroOffset[1] += ICM42688->Gyro[1];
+
+//                ICM42688->GyroOffset[2] += ICM42688->Gyro[2];
+//            
+
+//           // ¼ÇÂ¼Êý¾Ý¼«²î
+//            if (i == 0)
+//            {
+//                gNormMax = gNormTemp;
+//                gNormMin = gNormTemp;
+//                for (uint8_t j = 0; j < 3; j++)
+//                {
+//                    gyroMax[j] = ICM42688->Gyro[j];
+//                    gyroMin[j] = ICM42688->Gyro[j];
+//                }
+//            }
+//            else
+//            {
+//                if (gNormTemp > gNormMax)
+//                    gNormMax = gNormTemp;
+//                if (gNormTemp < gNormMin)
+//                    gNormMin = gNormTemp;
+//                for (uint8_t j = 0; j < 3; j++)
+//                {
+//                    if (ICM42688->Gyro[j] > gyroMax[j])
+//                        gyroMax[j] = ICM42688->Gyro[j];
+//                    if (ICM42688->Gyro[j] < gyroMin[j])
+//                        gyroMin[j] = ICM42688->Gyro[j];
+//                }
+//            }
+
+//               // Êý¾Ý²îÒì¹ý´óÈÏÎªÊÕµ½Íâ½ç¸ÉÈÅ£¬ÐèÖØÐÂÐ£×¼
+//            gNormDiff = gNormMax - gNormMin;
+//            for (uint8_t j = 0; j < 3; j++)
+//                gyroDiff[j] = gyroMax[j] - gyroMin[j];
+//            if (gNormDiff > 0.5f ||
+//                gyroDiff[0] > 0.15f ||
+//                gyroDiff[1] > 0.15f ||
+//                gyroDiff[2] > 0.15f)
+//                break;
+//						
+//            DWT_Delay(0.0005);
+////						HAL_Delay(5);
+//        }
+
+//      // È¡Æ½¾ùÖµµÃµ½±ê¶¨½á¹û
+//        ICM42688->gNorm /= (float)CaliTimes;
+//        for (uint8_t i = 0; i < 3; i++)
+//            ICM42688->GyroOffset[i] /= (float)CaliTimes;
+
+//       // ¼ÇÂ¼±ê¶¨Ê±IMUÎÂ¶È
+//        bsp_IcmGetTemperature(&bmi088_raw_temp);
+
+//        ICM42688->TempWhenCali = bmi088_raw_temp ;
+
+//        caliCount++;
+//    } while (gNormDiff > 0.5f ||
+//             fabsf(ICM42688->gNorm - 9.8f) > 0.5f ||
+//             gyroDiff[0] > 0.15f ||
+//             gyroDiff[1] > 0.15f ||
+//             gyroDiff[2] > 0.15f ||
+//             fabsf(ICM42688->GyroOffset[0]) > 0.01f ||
+//             fabsf(ICM42688->GyroOffset[1]) > 0.01f ||
+//             fabsf(ICM42688->GyroOffset[2]) > 0.01f);
+
+//    // ¸ù¾Ý±ê¶¨½á¹ûÐ£×¼¼ÓËÙ¶È¼Æ±ê¶ÈÒòÊý
+//    ICM42688->AccelScale = 9.81f / ICM42688->gNorm;
+//}
+
+void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
+{
+	float Gyro_Bias_X,Gyro_Bias_Y,Gyro_Bias_Z,Accel_Bias_X,Accel_Bias_Y,Accel_Bias_Z;
+	float gNormTemp;
+	
+	bsp_IcmGetTemperature(&temp);
+	 ICM42688->TempWhenCali = temp ;
+	bias_gyro_mode = Calibration_successful_mode;
+	
+	for(uint16_t i=0;i<10000;i++)
+	{
+		bsp_IcmGetRawData(ICM42688);		//µÃµ½Î´ÂË²¨µÄÔ­Ê¼Êý¾Ý
+
+		if(fabs(ICM42688->Gyro[0])>=20||fabs(ICM42688->Gyro[1])>=20||fabs(ICM42688->Gyro[2])>=20)
+		{
+		   bias_gyro_mode = Calibration_error_mode;
+		}
+		Gyro_Bias_X  += ICM42688->Gyro[X_axis];
+		Gyro_Bias_Y  += ICM42688->Gyro[Y_axis];
+		Gyro_Bias_Z  += ICM42688->Gyro[Z_axis];
+		
+	  Accel_Bias_X += ICM42688->Accel[X_axis];
+		Accel_Bias_Y += ICM42688->Accel[Y_axis];
+		Accel_Bias_Z += ICM42688->Accel[Z_axis];
+		
+		gNormTemp = sqrtf(ICM42688->Accel[X_axis] * ICM42688->Accel[X_axis] +
+                              ICM42688->Accel[Y_axis] * ICM42688->Accel[Y_axis] +
+                              ICM42688->Accel[Z_axis] * ICM42688->Accel[Z_axis]);
+   ICM42688->gNorm += gNormTemp;
+		
+		HAL_Delay(1);
+	}
+	Accel_Bias_X = Accel_Bias_X/10000.0f;
+	Accel_Bias_Y = Accel_Bias_Y/10000.0f;
+	Accel_Bias_Z = Accel_Bias_Z/10000.0f;
+	ICM42688->GyroOffset[X_axis] = Gyro_Bias_X/10000.0f;
+	ICM42688->GyroOffset[Y_axis] = Gyro_Bias_Y/10000.0f;
+	ICM42688->GyroOffset[Z_axis] = Gyro_Bias_Z/10000.0f;	
+	ICM42688->gNorm /= (float)10000.0f;;
+	ICM42688->AccelScale = 9.81f / ICM42688->gNorm;
+	
+	
+	
+
+//	ICM42688->GyroOffset[X_axis] = 0.0106154308;
+//	ICM42688->GyroOffset[Y_axis] = -0.0168463066;
+//	ICM42688->GyroOffset[Z_axis] = 0.00881659426;
+//	ICM42688->AccelScale = 1.0143429;
+	
+	
+	
+	
+	
+	
+	
+	
+	califlag = 1;
+	
+	
+	
+	
+	
+	
+	
+	
+	HAL_Delay(50);
 }

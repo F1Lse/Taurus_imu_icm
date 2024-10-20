@@ -31,10 +31,8 @@
 .\taurus_imu_icm_test\icm42688_driver.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\icm42688_driver.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
 .\taurus_imu_icm_test\icm42688_driver.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
-.\taurus_imu_icm_test\icm42688_driver.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
-.\taurus_imu_icm_test\icm42688_driver.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
 .\taurus_imu_icm_test\icm42688_driver.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\taurus_imu_icm_test\icm42688_driver.o: ..\Bsp\bsp_dwt.h
+.\taurus_imu_icm_test\icm42688_driver.o: ../Bsp/bsp_dwt.h
 .\taurus_imu_icm_test\icm42688_driver.o: ..\Compoents\ICM42688_Middleware.h
 .\taurus_imu_icm_test\icm42688_driver.o: ..\Compoents\ICM42688_reg.h
 .\taurus_imu_icm_test\icm42688_driver.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
