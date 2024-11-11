@@ -35,7 +35,7 @@ typedef struct
 
     float gNorm;
 	
-	  float Calidata[4];
+	  float Calidata[5];
 	
 } IMU_Data_t;
 

@@ -17,6 +17,7 @@
 #include "ICM42688_driver.h"
 #include "pid.h"
 #include "bsp_PWM.h"
+#include "can_comm.h"
 
 /* 坐标系转换中间变量 */
 const float xb[3] = {1, 0, 0};
@@ -34,7 +35,7 @@ uint8_t imu_init;
 
 
 
-
+extern 	float TempWheninit;
 /* DWT定时器变量 */
 uint32_t INS_DWT_Count = 0; 
 float dt = 0, t = 0;
@@ -89,15 +90,26 @@ void IMU_AHRS_Calcu_task(void){
         }
 				BodyFrameToEarthFrame(INS.MotionAccel_b, INS.MotionAccel_n, INS.q); 
              
+
+				
         INS.Yaw = QEKF_INS.Yaw;
         INS.Pitch = QEKF_INS.Pitch;
         INS.Roll = QEKF_INS.Roll;
         INS.YawTotalAngle = QEKF_INS.YawTotalAngle;  
 				
-				bsp_IcmGetTemperature(&temp);
+				//待发送数据				
+				imu_msg_send.pit_msg.e.pit = INS.Pitch;
+				imu_msg_send.pit_msg.e.wx = INS.Gyro[X_axis];
+				
+				imu_msg_send.yaw_msg.e.yaw = INS.Yaw;
+				imu_msg_send.yaw_msg.e.wz = INS.Gyro[Z_axis];
+				
+				imu_msg_send.rol_msg.e.rol = INS.Roll;
+				imu_msg_send.rol_msg.e.wy = INS.Gyro[Y_axis];
 				
 				if(count % 2 == 0)
 				{
+					bsp_IcmGetTemperature(&temp);
 					pid_calc(&pid_temperature,temp,IMU_Data.TempWhenCali);
 					TIM_Set_PWM(&htim1, TIM_CHANNEL_1,pid_temperature.pos_out);
 				}
@@ -150,12 +162,11 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
 {
 	float Gyro_Bias_X,Gyro_Bias_Y,Gyro_Bias_Z,Accel_Bias_X,Accel_Bias_Y,Accel_Bias_Z;
 	float gNormTemp;
-	
-	bsp_IcmGetTemperature(&temp);
-	 ICM42688->TempWhenCali = temp ;
+
+
 	bias_gyro_mode = Calibration_successful_mode;
 	
-	for(uint16_t i=0;i<10000;i++)
+	for(uint16_t i=0;i<50000;i++)
 	{
 		bsp_IcmGetRawData(ICM42688);		
 
@@ -176,21 +187,30 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
                               ICM42688->Accel[Z_axis] * ICM42688->Accel[Z_axis]);
    ICM42688->gNorm += gNormTemp;
 		
+		bsp_IcmGetTemperature(&temp);
+		pid_calc(&pid_temperature,temp,TempWheninit);
+	 TIM_Set_PWM(&htim1, TIM_CHANNEL_1,pid_temperature.pos_out);		
+		
 		HAL_Delay(1);
 	}
-	Accel_Bias_X = Accel_Bias_X/10000.0f;
-	Accel_Bias_Y = Accel_Bias_Y/10000.0f;
-	Accel_Bias_Z = Accel_Bias_Z/10000.0f;
-	ICM42688->GyroOffset[X_axis] = Gyro_Bias_X/10000.0f;
-	ICM42688->GyroOffset[Y_axis] = Gyro_Bias_Y/10000.0f;
-	ICM42688->GyroOffset[Z_axis] = Gyro_Bias_Z/10000.0f;	
-	ICM42688->gNorm /= (float)10000.0f;;
-	ICM42688->AccelScale = 9.81f / ICM42688->gNorm;
+			bsp_IcmGetTemperature(&temp);
+	 ICM42688->TempWhenCali = temp ;
+	Accel_Bias_X = Accel_Bias_X/50000.0f;
+	Accel_Bias_Y = Accel_Bias_Y/50000.0f;
+	Accel_Bias_Z = Accel_Bias_Z/50000.0f;
+	ICM42688->GyroOffset[X_axis] = Gyro_Bias_X/50000.0f;
+	ICM42688->GyroOffset[Y_axis] = Gyro_Bias_Y/50000.0f;
+	ICM42688->GyroOffset[Z_axis] = Gyro_Bias_Z/50000.0f;	
+	ICM42688->gNorm /= (float)50000.0f;
+	ICM42688->AccelScale = 9.78f / ICM42688->gNorm;
 	
 	ICM42688->Calidata[X_axis] = ICM42688->GyroOffset[X_axis];
 		ICM42688->Calidata[Y_axis] = ICM42688->GyroOffset[Y_axis];
 	ICM42688->Calidata[Z_axis] = ICM42688->GyroOffset[Z_axis];
 		ICM42688->Calidata[Accel_c] = ICM42688->AccelScale;
+	ICM42688->Calidata[Temp_Cali] = ICM42688->TempWhenCali;
+	
+
 	
 	califlag = 1;
 	

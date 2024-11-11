@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
+#include "fdcan.h"
 #include "spi.h"
 #include "tim.h"
 #include "gpio.h"
@@ -29,6 +31,10 @@
 #include "bsp_imu.h"
 #include "bsp_flash.h"
 #include "string.h"
+#include "can_comm.h"
+#include "bsp_PWM.h"
+#include "pid.h"
+#include "can_comm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -39,14 +45,16 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-//#define Calibrate //操作此宏定义是否校准
+//           #define Calibrate //操作此宏定义决定是否校准
 
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-uint32_t cnt;
-extern uint8_t califlag;
+uint32_t dwt_count;
+float dt_can;
+float TempWheninit = 38.0f;
+static uint32_t led_count;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -95,30 +103,48 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
+  MX_FDCAN1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+	
   DWT_Init(170);
+	
+	while(init_flag)
+		ICM42688_init();
+
    ICM42688_init();
   HAL_Delay(100);
+	
+	can_comm_init();
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 	
+	HAL_Delay(100);
+	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
+
+
 #ifdef Calibrate
+			
 	Calibrate_MPU_Offset(&IMU_Data);
 	
-	imu_flash_write(IMU_Data.Calidata,4);
+	imu_flash_write(IMU_Data.Calidata,5);
 		
 #else	
-	float Bias[4];
-	imu_flash_read(Bias,4);
+	float Bias[5];
+	imu_flash_read(Bias,5);
 
   memcpy(IMU_Data.GyroOffset,Bias,3*sizeof(float));
 	IMU_Data.AccelScale = Bias[3];
-	
+	IMU_Data.TempWhenCali = Bias[4]; 
 #endif		
 
-	HAL_Delay(100);
 
+	HAL_Delay(100);
+	
+    /*使能定时器1中断*/
+   HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,20 +154,15 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		static uint32_t led_count;
-		
-		    if(!init_flag)    
-      ICM42688_init();
-      else
-      
       if(init_flag)
       IMU_AHRS_Calcu_task();
-		
-			HAL_Delay(1);
-		
-			if(	led_count++ % 250 == 0)
-			HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
-		
+
+//			HAL_Delay(1);
+			
+			if(	led_count++ % 1000 == 0)
+		 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);	
+						
+			DWT_Delay(0.0007f);
   }
   /* USER CODE END 3 */
 }
@@ -166,8 +187,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-  RCC_OscInitStruct.PLL.PLLN = 21;
+  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
+  RCC_OscInitStruct.PLL.PLLN = 85;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -212,7 +233,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+	
+	if(htim->Instance==TIM3)
+	{
+	dt_can = DWT_GetDeltaT(&dwt_count);
+	can_std_transmit(&hfdcan1,0x001,imu_msg_send.pit_msg.array);
+	can_std_transmit(&hfdcan1,0x002,imu_msg_send.yaw_msg.array);
+//	can_std_transmit(&hfdcan1,0x003,imu_msg_send.rol_msg.array);	
+	}
   /* USER CODE END Callback 1 */
 }
 

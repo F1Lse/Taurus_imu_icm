@@ -22,7 +22,7 @@ typedef enum{
 #define Y_axis 1
 #define Z_axis 2
 #define Accel_c 3
-
+#define Temp_Cali 4
 
 typedef enum{
    Calibration_error_mode,

@@ -100,7 +100,7 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     static float accelInvNorm;
     if (!QEKF_INS.Initialized)
     {
-        IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0);
+        IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0.0f);
     }
 
     /*   F, number with * represent vals to be set
@@ -195,25 +195,20 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     // 获取融合后的数据,包括四元数和xy零飘值
     QEKF_INS.q[0] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[0];
     QEKF_INS.q[1] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[1];
-    QEKF_INS.q[2] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[2];
+    QEKF_INS.q[2] = -QEKF_INS.IMU_QuaternionEKF.FilteredValue[2];
     QEKF_INS.q[3] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[3];
     QEKF_INS.GyroBias[0] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[4];
     QEKF_INS.GyroBias[1] = QEKF_INS.IMU_QuaternionEKF.FilteredValue[5];
     QEKF_INS.GyroBias[2] = 0; // 大部分时候z轴通天,无法观测yaw的漂移
 
     // 利用四元数反解欧拉角
-//    QEKF_INS.Yaw   = atan2f(2.0f  * (QEKF_INS.q[0] * QEKF_INS.q[3] + QEKF_INS.q[1] * QEKF_INS.q[2]),  1.0f - (QEKF_INS.q[2] * QEKF_INS.q[2] + QEKF_INS.q[3] * QEKF_INS.q[3])*2.0f) * 57.295779513f;
-//    QEKF_INS.Pitch = atan2f(2.0f  * (QEKF_INS.q[0] * QEKF_INS.q[1] + QEKF_INS.q[2] * QEKF_INS.q[3]), 2.0f * (QEKF_INS.q[0] * QEKF_INS.q[0] + QEKF_INS.q[3] * QEKF_INS.q[3]) - 1.0f) * 57.295779513f;
-//    QEKF_INS.Roll  = asinf (-2.0f * (QEKF_INS.q[1] * QEKF_INS.q[3] - QEKF_INS.q[0] * QEKF_INS.q[2])) * 57.295779513f;
-//		
+    // 利用四元数反解欧拉角			
 		QEKF_INS.Yaw   = atan2f(2.0f  * (QEKF_INS.q[0] * QEKF_INS.q[3] + QEKF_INS.q[1] * QEKF_INS.q[2]), -2.0f * (QEKF_INS.q[2] * QEKF_INS.q[2] + QEKF_INS.q[3] * QEKF_INS.q[3]) + 1.0f) * 57.295779513f;
     QEKF_INS.Pitch = atan2f(2.0f  * (QEKF_INS.q[0] * QEKF_INS.q[1] + QEKF_INS.q[2] * QEKF_INS.q[3]), -2.0f * (QEKF_INS.q[1] * QEKF_INS.q[1] + QEKF_INS.q[2] * QEKF_INS.q[2]) + 1.0f) * 57.295779513f;
     QEKF_INS.Roll  = asinf (-2.0f * (QEKF_INS.q[1] * QEKF_INS.q[3] - QEKF_INS.q[0] * QEKF_INS.q[2])) * 57.295779513f;
-		
-		
-//		imu_real_data.yaw 	= atan2(2*q1*q2 + 2*q0*q3, -2*q2*q2 - 2*q3*q3 + 1)* 57.3+180.0f; // yaw
-//		imu_real_data.pitch = asin(-2*q1*q3 + 2*q0*q2)* 57.3;         							  			 // pitch
-//    imu_real_data.roll  = atan2(2*q2*q3  + 2*q0*q1, -2*q1*q1 - 2*q2*q2 + 1)* 57.3; 			 // roll 
+			
+
+
 
     // get Yaw total, yaw数据可能会超过360,处理一下方便其他功能使用(如小陀螺)
     if (QEKF_INS.Yaw - QEKF_INS.YawAngleLast > 180.0f)

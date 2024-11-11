@@ -6,9 +6,6 @@
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Core\\Inc",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\STM32G4xx_HAL_Driver\\Inc",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\STM32G4xx_HAL_Driver\\Inc\\Legacy",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\CMSIS\\Device\\ST\\STM32G4xx\\Include",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\CMSIS\\Include",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Compoents",
@@ -17,13 +14,12 @@
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\dsp\\Include",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Bsp",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\mathlib\\Algorithm",
+                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Communication",
                 "B:\\Keil5\\ARM\\ARMCC\\include",
                 "B:\\Keil5\\ARM\\ARMCC\\include\\rw",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\MDK-ARM",
                 "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Core\\Src",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\STM32G4xx_HAL_Driver\\Src",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Middlewares\\Third_Party\\FreeRTOS\\Source",
-                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang"
+                "b:\\GitHub\\Taurus_imu_icm\\Taurus_imu_icm_test\\Drivers\\STM32G4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",
