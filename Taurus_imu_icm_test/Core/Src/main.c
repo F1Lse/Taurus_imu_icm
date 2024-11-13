@@ -45,7 +45,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-//           #define Calibrate //操作此宏定义决定是否校准
+//          #define Calibrate //操作此宏定义决定是否校准
 
 /* USER CODE END PD */
 
@@ -138,6 +138,7 @@ int main(void)
   memcpy(IMU_Data.GyroOffset,Bias,3*sizeof(float));
 	IMU_Data.AccelScale = Bias[3];
 	IMU_Data.TempWhenCali = Bias[4]; 
+	califlag = 1;
 #endif		
 
 

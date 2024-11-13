@@ -166,7 +166,7 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
 
 	bias_gyro_mode = Calibration_successful_mode;
 	
-	for(uint16_t i=0;i<50000;i++)
+	for(uint16_t i=0;i<10000;i++)
 	{
 		bsp_IcmGetRawData(ICM42688);		
 
@@ -195,13 +195,13 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
 	}
 			bsp_IcmGetTemperature(&temp);
 	 ICM42688->TempWhenCali = temp ;
-	Accel_Bias_X = Accel_Bias_X/50000.0f;
-	Accel_Bias_Y = Accel_Bias_Y/50000.0f;
-	Accel_Bias_Z = Accel_Bias_Z/50000.0f;
-	ICM42688->GyroOffset[X_axis] = Gyro_Bias_X/50000.0f;
-	ICM42688->GyroOffset[Y_axis] = Gyro_Bias_Y/50000.0f;
-	ICM42688->GyroOffset[Z_axis] = Gyro_Bias_Z/50000.0f;	
-	ICM42688->gNorm /= (float)50000.0f;
+	Accel_Bias_X = Accel_Bias_X/10000.0f;
+	Accel_Bias_Y = Accel_Bias_Y/10000.0f;
+	Accel_Bias_Z = Accel_Bias_Z/10000.0f;
+	ICM42688->GyroOffset[X_axis] = Gyro_Bias_X/10000.0f;
+	ICM42688->GyroOffset[Y_axis] = Gyro_Bias_Y/10000.0f;
+	ICM42688->GyroOffset[Z_axis] = Gyro_Bias_Z/10000.0f;	
+	ICM42688->gNorm /= (float)10000.0f;
 	ICM42688->AccelScale = 9.78f / ICM42688->gNorm;
 	
 	ICM42688->Calidata[X_axis] = ICM42688->GyroOffset[X_axis];
