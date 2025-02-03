@@ -930,6 +930,11 @@
               <FileType>5</FileType>
               <FilePath>..\mathlib\Algorithm\QuaternionEKF.h</FilePath>
             </File>
+            <File>
+              <FileName>Mahony.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mathlib\Mahony.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

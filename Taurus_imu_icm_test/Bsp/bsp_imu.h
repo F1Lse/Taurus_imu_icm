@@ -65,6 +65,8 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688);
 void IMU_AHRS_Calcu_task(void);
 void BodyFrameToEarthFrame(const float *vecBF, float *vecEF, float *q);
 void EarthFrameToBodyFrame(const float *vecEF, float *vecBF, float *q);
+void ComplementaryFilter(const IMU_Data_t *ICM42688 ,float alpha, float dt);
+void calculate_euler_angles(IMU_Data_t *ICM42688,float alpha,float dt);
 #endif
 
 

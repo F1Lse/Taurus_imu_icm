@@ -24,6 +24,7 @@ static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
 static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
 static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
 
+#define PI               3.14159265358979f
 
 #define ICM42688DelayMs(ms) HAL_Delay(ms);
 
@@ -105,34 +106,34 @@ int16_t ICM42688_init(void)
         ICM42688_WRITE_SINGLE_REG(ICM42688_GYRO_CONFIG0, reg_val);
 				
 									
-				/*****抗混叠滤波器@536Hz*****/
-					
-					/*GYRO抗混叠滤波器配置*/
-					/*指定Bank1*/
-					ICM42688_WRITE_SINGLE_REG(0x76,0x01);
-					/*GYRO抗混叠滤波器配置*/
-					ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
-					ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
-					ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
-					ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
-					
-					/*ACCEL抗混叠滤波器配置*/
-					/*指定Bank2*/
-				ICM42688_WRITE_SINGLE_REG(0x76,0x02);
-					/*ACCEL抗混叠滤波器配置*/
-				ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
-				ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
-				ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
+//				/*****抗混叠滤波器@536Hz*****/
+//					
+//					/*GYRO抗混叠滤波器配置*/
+//					/*指定Bank1*/
+//					ICM42688_WRITE_SINGLE_REG(0x76,0x01);
+//					/*GYRO抗混叠滤波器配置*/
+//					ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
+//					ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
+//					ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
+//					ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
+//					
+//					/*ACCEL抗混叠滤波器配置*/
+//					/*指定Bank2*/
+//				ICM42688_WRITE_SINGLE_REG(0x76,0x02);
+//					/*ACCEL抗混叠滤波器配置*/
+//				ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
+//				ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
+//				ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
 
-				/*****自定义滤波器1号@111Hz*****/
+//				/*****自定义滤波器1号@111Hz*****/
 
-					/*指定Bank0*/
-				ICM42688_WRITE_SINGLE_REG(0x76,0x00);
-					/*滤波器顺序*/
-				ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
-				ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
-					/*滤波器设置*/
-				ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
+//					/*指定Bank0*/
+//				ICM42688_WRITE_SINGLE_REG(0x76,0x00);
+//					/*滤波器顺序*/
+//				ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
+//				ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
+//					/*滤波器设置*/
+//				ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
 					
 	
 
@@ -166,74 +167,50 @@ float dt_raw;
 *******************************************************************************/
 void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
 {
-		static float accLPFcoef = 0.8f;
-		static float last_Accel[3],last_Gyro[3];
-//		static float dt;
-		dt_raw = DWT_GetDeltaT(&GetRaw_DWT_Count);
+
    
 	
-	uint8_t buffer1[6] = {0};
-	uint8_t buffer2[6] = {0}; 
-    int16_t Accel[3];
-    int16_t Gyro[3];
+		uint8_t buffer1[6] = {0};
+		uint8_t buffer2[6] = {0}; 
     ICM42688_READ_MULI_REG(ICM42688_ACCEL_DATA_X1, buffer1, 6);
     ICM42688_READ_MULI_REG(ICM42688_GYRO_DATA_X1, buffer2, 6);
     
-    Accel[0]=   ((uint16_t)buffer1[0] << 8)  | buffer1[1];
-    Accel[1]  = ((uint16_t)buffer1[2] << 8)  | buffer1[3];
-    Accel[2]  = ((uint16_t)buffer1[4] << 8)  | buffer1[5];		
+    ICM42688->Accel_raw[0] =   (int16_t)((buffer1[0] << 8)  | buffer1[1]);
+    ICM42688->Accel_raw[1]  = (int16_t)((buffer1[2] << 8)  | buffer1[3]);
+    ICM42688->Accel_raw[2]  = (int16_t)((buffer1[4] << 8)  | buffer1[5]);		
    
-    Gyro[0]   = ((uint16_t)buffer2[0] << 8)  | buffer2[1];
-    Gyro[1]  = ((uint16_t)buffer2[2] << 8)  | buffer2[3];
-    Gyro[2]  = ((uint16_t)buffer2[4] << 8)  | buffer2[5];
-
-	//一阶低通滤波
-		Accel[0] =  accLPFcoef * Accel[0] + (1.0f - accLPFcoef) * last_Accel[0];
-		Accel[1] =  accLPFcoef * Accel[1] + (1.0f - accLPFcoef) * last_Accel[1];
-		Accel[2] =  accLPFcoef * Accel[2] + (1.0f - accLPFcoef) * last_Accel[2];
-		 
-		Gyro[0] =  accLPFcoef * Gyro[0] + (1.0f - accLPFcoef) * last_Gyro[0];
-		Gyro[1] =  accLPFcoef * Gyro[1] + (1.0f - accLPFcoef) * last_Gyro[1];
-		Gyro[2] =  accLPFcoef * Gyro[2] + (1.0f - accLPFcoef) * last_Gyro[2];
-		 
-
-		
-		 last_Accel[0] = Accel[0];
-		 last_Accel[1] = Accel[1];
-		 last_Accel[2] = Accel[2];
-		 
-		 last_Gyro[0] = Gyro[0];
-		 last_Gyro[1] = Gyro[1];
-		 last_Gyro[2] = Gyro[2];
+    ICM42688->Gyro_raw[0]   = (int16_t)((buffer2[0] << 8)  | buffer2[1]);
+    ICM42688->Gyro_raw[1]  =  (int16_t)((buffer2[2] << 8)  | buffer2[3]);
+    ICM42688->Gyro_raw[2]  =  (int16_t)((buffer2[4] << 8)  | buffer2[5]);
 		
 		if(califlag)
-    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* G_ACC * ICM42688->AccelScale);
-     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* G_ACC * ICM42688->AccelScale);
-     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* G_ACC * ICM42688->AccelScale);
-		
-	ICM42688->Gyro[0] = (Gyro[0] * gyroSensitivity/57.29577951308f- ICM42688->GyroOffset[0]);
-    ICM42688->Gyro[1] = (Gyro[1] * gyroSensitivity/57.29577951308f - ICM42688->GyroOffset[1]);
-    ICM42688->Gyro[2] = (Gyro[2] * gyroSensitivity/57.29577951308f - ICM42688->GyroOffset[2]);
-	
-	}
-			
-		
-	else			
-    { ICM42688->Accel[0] = ( Accel[0] * accSensitivity* G_ACC);
-     ICM42688->Accel[1] = ( Accel[1] * accSensitivity* G_ACC);
-     ICM42688->Accel[2] = ( Accel[2] * accSensitivity* G_ACC);
-		
-	ICM42688->Gyro[0] = (Gyro[0] * gyroSensitivity/57.29577951308f);	
-	ICM42688->Gyro[1] = (Gyro[1] * gyroSensitivity/57.29577951308f);	
-	ICM42688->Gyro[2] = (Gyro[2] * gyroSensitivity/57.29577951308f);	
-	}
-		
-		 
-		 		 
- 
-		 
-		
+		{
+		ICM42688->Gyro_raw[0] = ICM42688->Gyro_raw[0] - IMU_Data.GyroOffset[0];
+		ICM42688->Gyro_raw[1] = ICM42688->Gyro_raw[1] - IMU_Data.GyroOffset[1];
+		ICM42688->Gyro_raw[2] = ICM42688->Gyro_raw[2] - IMU_Data.GyroOffset[2];
+		}
 
+}
+
+/**
+ * @brief 将原始数据转换为物理量
+ * @param raw 原始数据
+ * @param data 转换后的物理量数据
+ * @param accel_range 加速度计量程
+ * @param gyro_range 陀螺仪量程
+ */
+void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
+    // 加速度转换（单位：m/s²）
+    float accel_scale = 9.81f / accSensitivity;
+    ICM42688->Accel[0] = ICM42688->Accel_raw[0] * accel_scale;
+    ICM42688->Accel[1]=  ICM42688->Accel_raw[1] * accel_scale;
+    ICM42688->Accel[2] = ICM42688->Accel_raw[2] * accel_scale;
+
+    // 陀螺仪转换（单位：rad/s）
+    float gyro_scale = (1.0f / gyroSensitivity) * (PI / 180.0f);
+    ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
+    ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
+    ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;
 
 }
 
@@ -312,17 +289,16 @@ float bsp_Icm42688GetAres(uint8_t Ascale)
     // Possible accelerometer scales (and their register bit settings) are:
     // 2 Gs (11), 4 Gs (10), 8 Gs (01), and 16 Gs  (00).
     case AFS_2G:
-        accSensitivity = 2 / 32768.0f;
+        accSensitivity = 16384.0f;
         break;
     case AFS_4G:
-        accSensitivity = 4 / 32768.0f;
+        accSensitivity = 8192.0f;
         break;
     case AFS_8G:
-        accSensitivity = 8 / 32768.0f;
+        accSensitivity = 4096.0f;
         break;
     case AFS_16G:
-        accSensitivity = 16 / 32768.0f;
-//		accSensitivity =LSB_ACC_16G*0.1f;
+        accSensitivity = 2048.0f;
         break;
     }
 
@@ -343,20 +319,19 @@ float bsp_Icm42688GetGres(uint8_t Gscale)
         gyroSensitivity = 62.5f / 32768.0f;
         break;
     case GFS_125DPS:
-        gyroSensitivity = 125.0f / 32768.0f;
+        gyroSensitivity = 131.0f;
         break;
     case GFS_250DPS:
-        gyroSensitivity = 250.0f / 32768.0f;
+        gyroSensitivity = 131.0f;
         break;
     case GFS_500DPS:
-        gyroSensitivity = 500.0f / 32768.0f;
+        gyroSensitivity = 65.5f;
         break;
     case GFS_1000DPS:
-        gyroSensitivity = 1000.0f / 32768.0f;
+        gyroSensitivity = 32.8f;
         break;
     case GFS_2000DPS:
-        gyroSensitivity = 2000.0f / 32768.0f;
-//		gyroSensitivity  = LSB_GYRO_2000_R;
+        gyroSensitivity = 16.4f;
 	
         break;
     }

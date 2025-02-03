@@ -47,3 +47,4 @@
 .\taurus_imu_icm_test\main.o: ../Communication/can_comm.h
 .\taurus_imu_icm_test\main.o: ../Bsp/bsp_PWM.h
 .\taurus_imu_icm_test\main.o: ../mathlib/pid.h
+.\taurus_imu_icm_test\main.o: ../mathlib/Mahony.h

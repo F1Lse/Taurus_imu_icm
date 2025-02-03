@@ -24,9 +24,9 @@
 typedef struct
 {
     float Accel[3];
-
+		float Accel_raw[3];
     float Gyro[3];
-
+		float Gyro_raw[3];
     float TempWhenCali;
     float Temperature;
 
@@ -45,6 +45,8 @@ float bsp_Icm42688GetAres(uint8_t Ascale);
 float bsp_Icm42688GetGres(uint8_t Gscale);
 
 void bsp_IcmGetRawData(IMU_Data_t *ICM42688);
+
+void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688);
 
 int8_t bsp_IcmGetTemperature(int16_t* pTemp);
 

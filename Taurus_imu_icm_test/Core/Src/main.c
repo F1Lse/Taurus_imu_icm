@@ -35,6 +35,7 @@
 #include "bsp_PWM.h"
 #include "pid.h"
 #include "can_comm.h"
+#include "Mahony.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,17 @@ uint32_t dwt_count;
 float dt_can;
 float TempWheninit = 38.0f;
 static uint32_t led_count;
+uint32_t hubu_DWT_Count;
+		    float alpha = 0.98f;  // 滤波系数（陀螺仪权重）
+				
+				    
+    // 获取欧拉角
+    float roll_Mahony, pitch_Mahony, yaw_Mahony;
+	MahonyFilter filter;
+	
+
+
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -123,6 +135,9 @@ int main(void)
 	
 	HAL_Delay(100);
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
+	
+			// 初始化（采样率100Hz，参数需调试）
+		Mahony_Init(&filter, 1000.0f, 2.0f, 0.005f);
 
 
 #ifdef Calibrate
@@ -153,17 +168,42 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+		
     /* USER CODE BEGIN 3 */
-      if(init_flag)
-      IMU_AHRS_Calcu_task();
-
-//			HAL_Delay(1);
+//      if(init_flag)
+//      IMU_AHRS_Calcu_task();
+		
+		
 			
-			if(	led_count++ % 1000 == 0)
-		 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);	
+//		HAL_Delay(1);
+//			
+//			if(	led_count++ % 1000 == 0)
+//		 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);	
+		
+
+//    float dt  = DWT_GetDeltaT(&hubu_DWT_Count);
+
+//		 // 调用互补滤波函数
+////    ComplementaryFilter(&IMU_Data, alpha, dt);
+//		calculate_euler_angles(&IMU_Data, alpha, dt);
+			
+		bsp_IcmGetRawData(&IMU_Data);
+		ICM42688P_ConvertToPhysical(&IMU_Data);
+			
+			    // 更新滤波器
+    Mahony_Update(&filter, IMU_Data.Gyro[X_axis], IMU_Data.Gyro[Y_axis], IMU_Data.Gyro[Z_axis], IMU_Data.Accel[X_axis], IMU_Data.Accel[Y_axis], IMU_Data.Accel[Z_axis]);
+
+    Mahony_GetEulerAngles(&filter, &roll_Mahony, &pitch_Mahony, &yaw_Mahony);
+		
+		    // 转换为角度（可选）
+    roll_Mahony *= 180.0f/PI;
+    pitch_Mahony *= 180.0f/PI;
+    yaw_Mahony *= 180.0f/PI;
+		
+		
+//				DWT_Delay(0.007f);
+				HAL_Delay(1);
 						
-			DWT_Delay(0.0007f);
   }
   /* USER CODE END 3 */
 }
