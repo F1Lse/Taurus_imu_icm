@@ -137,7 +137,7 @@ int main(void)
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
 	
 			// 初始化（采样率100Hz，参数需调试）
-		Mahony_Init(&filter, 1000.0f, 2.0f, 0.005f);
+		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
 
 
 #ifdef Calibrate
