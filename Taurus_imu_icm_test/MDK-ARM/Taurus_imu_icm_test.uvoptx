@@ -308,7 +308,17 @@
         <Ww>
           <count>30</count>
           <WinNumber>1</WinNumber>
-          <ItemText>led_count</ItemText>
+          <ItemText>led_count,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>31</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>temp</ItemText>
+        </Ww>
+        <Ww>
+          <count>32</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pid_temperature</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

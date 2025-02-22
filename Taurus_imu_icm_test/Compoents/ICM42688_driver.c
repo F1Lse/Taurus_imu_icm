@@ -4,7 +4,7 @@
 #include "ICM42688_Middleware.h"
 #include "ICM42688_reg.h"
 #include "bsp_imu.h"
-
+#include "data_processing.h"
 
 uint8_t reg_val;
 uint8_t init_flag;
@@ -14,7 +14,7 @@ int16_t temp;
 
 
 uint32_t GetRaw_DWT_Count;
-
+extern GyroFilter gf;
 
 float accSensitivity ;// 加速计灵敏度
 float gyroSensitivity ;// 角速度计灵敏度
@@ -24,7 +24,7 @@ static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
 static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
 static void ICM42688_read_muli_reg(uint8_t reg, uint8_t *buf, uint8_t len);
 
-#define PI               3.14159265358979f
+
 
 #define ICM42688DelayMs(ms) HAL_Delay(ms);
 
@@ -185,9 +185,11 @@ void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
 		
 		if(califlag)
 		{
+			
 		ICM42688->Gyro_raw[0] = ICM42688->Gyro_raw[0] - IMU_Data.GyroOffset[0];
 		ICM42688->Gyro_raw[1] = ICM42688->Gyro_raw[1] - IMU_Data.GyroOffset[1];
 		ICM42688->Gyro_raw[2] = ICM42688->Gyro_raw[2] - IMU_Data.GyroOffset[2];
+
 		}
 
 }
@@ -201,6 +203,7 @@ void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
  */
 void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
     // 加速度转换（单位：m/s²）
+		float un_filtered[3];
     float accel_scale = 9.81f / accSensitivity;
     ICM42688->Accel[0] = ICM42688->Accel_raw[0] * accel_scale;
     ICM42688->Accel[1]=  ICM42688->Accel_raw[1] * accel_scale;
@@ -208,9 +211,20 @@ void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
 
     // 陀螺仪转换（单位：rad/s）
     float gyro_scale = (1.0f / gyroSensitivity) * (PI / 180.0f);
-    ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
-    ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
-    ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;
+	
+	  un_filtered[0]= ICM42688->Gyro_raw[0] * gyro_scale;
+    un_filtered[1] = ICM42688->Gyro_raw[1] * gyro_scale;
+    un_filtered[2] = ICM42688->Gyro_raw[2] * gyro_scale;
+	
+				
+			
+			GyroFilter_Update(&gf, un_filtered, ICM42688->Gyro);
+	
+//	  ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
+//    ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
+//    ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;
+//	
+//	
 
 }
 

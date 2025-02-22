@@ -100,8 +100,8 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     static float accelInvNorm;
     if (!QEKF_INS.Initialized)
     {
-//        IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0.0f);
-					IMU_QuaternionEKF_Init(1e-4, 1e-6, 0.01,  1, 0.001f);
+         IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0.0f);
+//					IMU_QuaternionEKF_Init(1e-4, 1e-6, 0.01,  1, 0.001f);
     }
 
     /*   F, number with * represent vals to be set

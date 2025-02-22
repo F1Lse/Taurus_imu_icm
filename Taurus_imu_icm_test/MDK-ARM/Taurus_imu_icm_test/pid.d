@@ -1,28 +1,42 @@
-./taurus_imu_icm_test/pid.o: ..\mathlib\pid.c ..\mathlib\pid.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
-  ..\Core\Inc\stm32g4xx_hal_conf.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h \
-  ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h \
-  ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g431xx.h \
-  ..\Drivers\CMSIS\Include\core_cm4.h \
-  ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_fdcan.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
-  ..\mathlib\mytype.h ..\mathlib\data_processing.h
+.\taurus_imu_icm_test\pid.o: ..\mathlib\pid.c
+.\taurus_imu_icm_test\pid.o: ..\mathlib\pid.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h
+.\taurus_imu_icm_test\pid.o: ../Core/Inc/stm32g4xx_hal_conf.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_def.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g4xx.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g431xx.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Include/core_cm4.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Include/cmsis_version.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/CMSIS/Device/ST/STM32G4xx/Include/system_stm32g4xx.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_gpio.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_gpio_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_dma.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_dma_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_cortex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_exti.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_fdcan.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ramfunc.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h
+.\taurus_imu_icm_test\pid.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h
+.\taurus_imu_icm_test\pid.o: ..\mathlib\mytype.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\taurus_imu_icm_test\pid.o: C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\taurus_imu_icm_test\pid.o: ..\mathlib\data_processing.h
