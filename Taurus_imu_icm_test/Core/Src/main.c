@@ -36,6 +36,7 @@
 #include "pid.h"
 #include "can_comm.h"
 #include "Mahony.h"
+#include "ekf_attitude.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +47,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-//          #define Calibrate //操作此宏定义决定是否校准
+          #define Calibrate //操作此宏定义决定是否校准
 
 /* USER CODE END PD */
 
@@ -62,9 +63,10 @@ uint32_t hubu_DWT_Count;
 				    
     // 获取欧拉角
     float roll_Mahony, pitch_Mahony, yaw_Mahony;
+		float roll_ekf, pitch_ekf, yaw_ekf;
 	MahonyFilter filter;
 	
-
+EKF_Instance ekf;
 
 
 /* USER CODE END PM */
@@ -136,9 +138,10 @@ int main(void)
 	HAL_Delay(100);
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
 	
-			// 初始化（采样率100Hz，参数需调试）
-		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
-
+//			// 初始化（采样率100Hz，参数需调试）
+//		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
+//		 // 初始化EKF（200Hz采样率）
+//    EKF_Init(&ekf, 0.001f); 
 
 #ifdef Calibrate
 			
@@ -170,39 +173,62 @@ int main(void)
     /* USER CODE END WHILE */
 		
     /* USER CODE BEGIN 3 */
-//      if(init_flag)
-//      IMU_AHRS_Calcu_task();
-		
-		
+      if(init_flag)
+      IMU_AHRS_Calcu_task();
 			
-//		HAL_Delay(1);
-//			
-//			if(	led_count++ % 1000 == 0)
-//		 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);	
+			
+		if(bias_gyro_mode == Calibration_error_mode)
+			led_count +=50;
+		else
+			led_count +=1;
 		
-
+		if(	led_count % 1000 == 0)
+			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);	
 //    float dt  = DWT_GetDeltaT(&hubu_DWT_Count);
 
 //		 // 调用互补滤波函数
 ////    ComplementaryFilter(&IMU_Data, alpha, dt);
 //		calculate_euler_angles(&IMU_Data, alpha, dt);
-			
-		bsp_IcmGetRawData(&IMU_Data);
-		ICM42688P_ConvertToPhysical(&IMU_Data);
-			
-			    // 更新滤波器
-    Mahony_Update(&filter, IMU_Data.Gyro[X_axis], IMU_Data.Gyro[Y_axis], IMU_Data.Gyro[Z_axis], IMU_Data.Accel[X_axis], IMU_Data.Accel[Y_axis], IMU_Data.Accel[Z_axis]);
+//			
+//		bsp_IcmGetRawData(&IMU_Data);
+//		ICM42688P_ConvertToPhysical(&IMU_Data);
+//			
+//			    // 更新滤波器
+//    Mahony_Update(&filter, IMU_Data.Gyro[X_axis], IMU_Data.Gyro[Y_axis], IMU_Data.Gyro[Z_axis], IMU_Data.Accel[X_axis], IMU_Data.Accel[Y_axis], IMU_Data.Accel[Z_axis]);
 
-    Mahony_GetEulerAngles(&filter, &roll_Mahony, &pitch_Mahony, &yaw_Mahony);
+//    Mahony_GetEulerAngles(&filter, &roll_Mahony, &pitch_Mahony, &yaw_Mahony);
+//		
+//		    // 转换为角度（可选）
+//    roll_Mahony *= 180.0f/PI;
+//    pitch_Mahony *= 180.0f/PI;
+//    yaw_Mahony *= 180.0f/PI;
+//		
 		
-		    // 转换为角度（可选）
-    roll_Mahony *= 180.0f/PI;
-    pitch_Mahony *= 180.0f/PI;
-    yaw_Mahony *= 180.0f/PI;
-		
-		
-//				DWT_Delay(0.007f);
-				HAL_Delay(1);
+//		
+//		bsp_IcmGetRawData(&IMU_Data);
+//		ICM42688P_ConvertToPhysical(&IMU_Data);
+//		    float dt  = DWT_GetDeltaT(&hubu_DWT_Count);
+//		// EKF预测
+//        EKF_Predict(&ekf,IMU_Data.Gyro[X_axis], IMU_Data.Gyro[Y_axis], IMU_Data.Gyro[Z_axis],dt);
+//        
+//        // EKF更新（加速度计）
+//        if(1) { // 运动检测函数
+//            EKF_Update(&ekf, IMU_Data.Accel[X_axis], IMU_Data.Accel[Y_axis], IMU_Data.Accel[Z_axis]);
+//        }
+//        
+//        // 获取角度
+
+//        EKF_GetEulerAngles(&ekf, &roll_ekf, &pitch_ekf, &yaw_ekf);
+//				roll_ekf *= 180.0f/PI;
+//				pitch_ekf *= 180.0f/PI;
+//				yaw_ekf *= 180.0f/PI;
+//						
+				
+				
+				
+				
+			DWT_Delay(0.001f);
+//				HAL_Delay(1);
 						
   }
   /* USER CODE END 3 */

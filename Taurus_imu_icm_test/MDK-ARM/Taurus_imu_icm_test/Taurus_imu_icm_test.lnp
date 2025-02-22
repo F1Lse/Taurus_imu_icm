@@ -40,6 +40,7 @@
 ".\taurus_imu_icm_test\pid.o"
 ".\taurus_imu_icm_test\quaternionekf.o"
 ".\taurus_imu_icm_test\mahony.o"
+".\taurus_imu_icm_test\ekf_attitude.o"
 "..\dsp\arm_cortexM4lf_math.lib"
 ".\taurus_imu_icm_test\can_comm.o"
 --library_type=microlib --strict --scatter ".\Taurus_imu_icm_test\Taurus_imu_icm_test.sct"

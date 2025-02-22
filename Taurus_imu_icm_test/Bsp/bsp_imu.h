@@ -5,7 +5,7 @@
 #include "math.h"
 #include "ICM42688_driver.h"
 
-#define gNORM 10.25f
+
 #define GxOFFSET 0.00247530174f
 #define GyOFFSET 0.000393082853f
 #define GzOFFSET 0.000393082853f
@@ -58,7 +58,7 @@ typedef struct
 /***************/
 extern imu_mode_e imu_mode;
 extern uint8_t califlag;//初始化标志位
-
+extern bias_gyro_mode_e bias_gyro_mode;
 
 void Calibrate_MPU_Offset(IMU_Data_t *ICM42688);
 

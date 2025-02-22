@@ -19,6 +19,8 @@
 #include "bsp_PWM.h"
 #include "can_comm.h"
 
+#define gNORM 9.83293118f
+float icm088_AccelScale = 9.81f / gNORM;
 /* 坐标系转换中间变量 */
 const float xb[3] = {1, 0, 0};
 const float yb[3] = {0, 1, 0};
@@ -56,19 +58,22 @@ void IMU_AHRS_Calcu_task(void){
 		}
 		bsp_IcmGetRawData(&IMU_Data);
 		ICM42688P_ConvertToPhysical(&IMU_Data);
-    const float gravity[3] = {0, 0, 9.7833f};
+    const float gravity[3] = {0, 0, 9.81f};
 		dt = DWT_GetDeltaT(&INS_DWT_Count);
     t += dt;
 
 		
-		INS.AccelLPF = 0.01f;
+		INS.AccelLPF = 0.0085f;
 		
-        INS.Accel[X_axis] = IMU_Data.Accel[X_axis];
-        INS.Accel[Y_axis] =  IMU_Data.Accel[Y_axis];
-        INS.Accel[Z_axis] =  IMU_Data.Accel[Z_axis];
+        INS.Accel[X_axis] = IMU_Data.Accel[X_axis]*icm088_AccelScale;
+        INS.Accel[Y_axis] =  IMU_Data.Accel[Y_axis]*icm088_AccelScale;
+        INS.Accel[Z_axis] =  IMU_Data.Accel[Z_axis]*icm088_AccelScale;
+		
         INS.Gyro[X_axis] = IMU_Data.Gyro[X_axis];
         INS.Gyro[Y_axis] = IMU_Data.Gyro[Y_axis];
         INS.Gyro[Z_axis] = IMU_Data.Gyro[Z_axis];
+		
+		
 
         INS.atanxz = -atan2f(INS.Accel[X_axis], INS.Accel[Z_axis]) * 180 / PI;
         INS.atanyz = atan2f(INS.Accel[Y_axis], INS.Accel[Z_axis]) * 180 / PI;
@@ -171,9 +176,10 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
 	{
 		bsp_IcmGetRawData(ICM42688);		
 
-		if(fabs(ICM42688->Gyro_raw[0])>=20||fabs(ICM42688->Gyro_raw[1])>=20||fabs(ICM42688->Gyro_raw[2])>=20)
+		if(fabs(ICM42688->Gyro_raw[0])>=25||fabs(ICM42688->Gyro_raw[1])>=25||fabs(ICM42688->Gyro_raw[2])>=25)
 		{
 		   bias_gyro_mode = Calibration_error_mode;
+			
 		}
 		Gyro_Bias_X  += ICM42688->Gyro_raw[X_axis];
 		Gyro_Bias_Y  += ICM42688->Gyro_raw[Y_axis];

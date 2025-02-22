@@ -52,7 +52,7 @@ void IMU_QuaternionEKF_Init(float process_noise1, float process_noise2, float me
     QEKF_INS.Q1 = process_noise1;
     QEKF_INS.Q2 = process_noise2;
     QEKF_INS.R = measure_noise;
-    QEKF_INS.ChiSquareTestThreshold = 1e-8;
+    QEKF_INS.ChiSquareTestThreshold = 1e-4;//1e-8
     QEKF_INS.ConvergeFlag = 0;
     QEKF_INS.ErrorCount = 0;
     QEKF_INS.UpdateCount = 0;
@@ -100,8 +100,8 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     static float accelInvNorm;
     if (!QEKF_INS.Initialized)
     {
-        IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0.0f);
-			
+//        IMU_QuaternionEKF_Init(10, 0.001, 10000000, 0.9996 * 0 + 1, 0.0f);
+					IMU_QuaternionEKF_Init(1e-4, 1e-6, 0.01,  1, 0.001f);
     }
 
     /*   F, number with * represent vals to be set

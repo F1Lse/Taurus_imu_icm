@@ -10,9 +10,9 @@
       <TargetName>Taurus_imu_icm_test</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060528::V5.06 update 5 (build 528)::.\ARMCC</pArmCC>
-      <pCCUsed>5060528::V5.06 update 5 (build 528)::.\ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pArmCC>6220000::V6.22::ARMCLANG</pArmCC>
+      <pCCUsed>6220000::V6.22::ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32G431CBUx</Device>
@@ -82,7 +82,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -324,14 +324,14 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>3</v6Lang>
-            <v6LangP>3</v6LangP>
+            <v6Lang>6</v6Lang>
+            <v6LangP>4</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -339,7 +339,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32G431xx,ARM_MATH_CM4,__FPU_PRESENT=1U</Define>
+              <Define>USE_HAL_DRIVER,STM32G431xx,ARM_MATH_CM4,__FPU_PRESENT=1U,__FPU_USED=1U,</Define>
               <Undefine></Undefine>
               <IncludePath>../Core/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/CMSIS/Include;../Compoents;../mathlib;../dsp;../dsp/Include;../Bsp;../mathlib/Algorithm;../Communication</IncludePath>
             </VariousControls>
@@ -934,6 +934,11 @@
               <FileName>Mahony.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\mathlib\Mahony.c</FilePath>
+            </File>
+            <File>
+              <FileName>ekf_attitude.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mathlib\ekf_attitude.c</FilePath>
             </File>
           </Files>
         </Group>

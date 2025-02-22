@@ -41,11 +41,10 @@ void can_comm_init(void)
  * @param[in] data      : 数据指针
  * @retval    void
  */
-uint8_t can_std_transmit(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *data)
+void can_std_transmit(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *data)
 {
   tx_message.Identifier = id;
-	  if(HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &tx_message, data)!=HAL_OK) return 1;	
-			
-	return 0;
+	
+	HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &tx_message, data);	
 
 }
