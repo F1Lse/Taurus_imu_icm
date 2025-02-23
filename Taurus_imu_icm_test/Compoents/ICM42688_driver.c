@@ -106,34 +106,34 @@ int16_t ICM42688_init(void)
         ICM42688_WRITE_SINGLE_REG(ICM42688_GYRO_CONFIG0, reg_val);
 				
 									
-//				/*****抗混叠滤波器@536Hz*****/
-//					
-//					/*GYRO抗混叠滤波器配置*/
-//					/*指定Bank1*/
-//					ICM42688_WRITE_SINGLE_REG(0x76,0x01);
-//					/*GYRO抗混叠滤波器配置*/
-//					ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
-//					ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
-//					ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
-//					ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
-//					
-//					/*ACCEL抗混叠滤波器配置*/
-//					/*指定Bank2*/
-//				ICM42688_WRITE_SINGLE_REG(0x76,0x02);
-//					/*ACCEL抗混叠滤波器配置*/
-//				ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
-//				ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
-//				ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
+				/*****抗混叠滤波器@536Hz*****/
+					
+					/*GYRO抗混叠滤波器配置*/
+					/*指定Bank1*/
+					ICM42688_WRITE_SINGLE_REG(0x76,0x01);
+					/*GYRO抗混叠滤波器配置*/
+					ICM42688_WRITE_SINGLE_REG(0x0B,0xA0);//开启抗混叠和陷波滤波器
+					ICM42688_WRITE_SINGLE_REG(0x0C,0x0C);//GYRO_AAF_DELT 12 (default 13)
+					ICM42688_WRITE_SINGLE_REG(0x0D,0x90);//GYRO_AAF_DELTSQR 144 (default 170)
+					ICM42688_WRITE_SINGLE_REG(0x0E,0x80);//GYRO_AAF_BITSHIFT 8 (default 8)
+					
+					/*ACCEL抗混叠滤波器配置*/
+					/*指定Bank2*/
+				ICM42688_WRITE_SINGLE_REG(0x76,0x02);
+					/*ACCEL抗混叠滤波器配置*/
+				ICM42688_WRITE_SINGLE_REG(0x03,0x18);//开启滤波器 ACCEL_AFF_DELT 12 (default 24)
+				ICM42688_WRITE_SINGLE_REG(0x04,0x90);//ACCEL_AFF_DELTSQR 144 (default 64)
+				ICM42688_WRITE_SINGLE_REG(0x05,0x80);//ACCEL_AAF_BITSHIFT 8 (default 6)
 
-//				/*****自定义滤波器1号@111Hz*****/
+				/*****自定义滤波器1号@111Hz*****/
 
-//					/*指定Bank0*/
-//				ICM42688_WRITE_SINGLE_REG(0x76,0x00);
-//					/*滤波器顺序*/
-//				ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
-//				ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
-//					/*滤波器设置*/
-//				ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
+					/*指定Bank0*/
+				ICM42688_WRITE_SINGLE_REG(0x76,0x00);
+					/*滤波器顺序*/
+				ICM42688_WRITE_SINGLE_REG(0x51,0x12);//GYRO滤波器1st
+				ICM42688_WRITE_SINGLE_REG(0x53,0x05);//ACCEL滤波器1st
+					/*滤波器设置*/
+				ICM42688_WRITE_SINGLE_REG(0x52,0x33);//111Hz 03
 					
 	
 
@@ -218,11 +218,11 @@ void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
 	
 				
 			
-			GyroFilter_Update(&gf, un_filtered, ICM42688->Gyro);
+//			GyroFilter_Update(&gf, un_filtered, ICM42688->Gyro);
 	
-//	  ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
-//    ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
-//    ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;
+	  ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
+    ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
+    ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;
 //	
 //	
 

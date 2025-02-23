@@ -219,6 +219,8 @@ void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, 
     {
         QEKF_INS.YawRoundCount++;
     }
+		
+		QEKF_INS.Yaw = BranchlessNormalizeYaw(QEKF_INS.Yaw);
     QEKF_INS.YawTotalAngle = 360.0f * QEKF_INS.YawRoundCount + QEKF_INS.Yaw;
     QEKF_INS.YawAngleLast = QEKF_INS.Yaw;
     QEKF_INS.UpdateCount++; // 初始化低通滤波用,计数测试用
@@ -494,4 +496,10 @@ static float invSqrt(float x)
     y = *(float *)&i;
     y = y * (1.5f - (halfx * y * y));
     return y;
+}
+
+		// 方法3：无分支归一化（适合嵌入式系统）
+static float BranchlessNormalizeYaw(float yaw) {
+    // 单行代码实现，避免分支预测
+    return yaw - 360.0f * floorf(yaw / 360.0f + 0.5f / 360.0f);
 }

@@ -1,7 +1,7 @@
 Dependencies for Project 'Taurus_imu_icm_test', Target 'Taurus_imu_icm_test': (DO NOT MODIFY !)
 CompilerVersion: 5060528::V5.06 update 5 (build 528)::.\ARMCC
 F (startup_stm32g431xx.s)(0x67A38F1B)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include--pd "__UVISION_VERSION SETA 540" --pd "STM32G431xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32g431xx.lst --xref -o .\taurus_imu_icm_test\startup_stm32g431xx.o --depend .\taurus_imu_icm_test\startup_stm32g431xx.d)
-F (../Core/Src/main.c)(0x67B9E83E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\main.o --omf_browse .\taurus_imu_icm_test\main.crf --depend .\taurus_imu_icm_test\main.d)
+F (../Core/Src/main.c)(0x67BAC2D8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\main.o --omf_browse .\taurus_imu_icm_test\main.crf --depend .\taurus_imu_icm_test\main.d)
 I (../Core/Inc/main.h)(0x670F8A3D)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x6713A7A0)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x67374CAE)
@@ -957,7 +957,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x6713A7A0)
-F (..\Compoents\ICM42688_driver.c)(0x67B9E83F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\icm42688_driver.o --omf_browse .\taurus_imu_icm_test\icm42688_driver.crf --depend .\taurus_imu_icm_test\icm42688_driver.d)
+F (..\Compoents\ICM42688_driver.c)(0x67BAC05E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\icm42688_driver.o --omf_browse .\taurus_imu_icm_test\icm42688_driver.crf --depend .\taurus_imu_icm_test\icm42688_driver.d)
 I (..\Compoents\ICM42688_driver.h)(0x67A0FFDF)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\stdint.h)(0x66EA6C6E)
 I (../Core/Inc/main.h)(0x670F8A3D)
@@ -1115,7 +1115,7 @@ I (../dsp/Include/arm_math.h)(0x662CCBC4)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (../mathlib/Calibration.h)(0x671157E3)
 I (../mathlib/Filter.h)(0x67115992)
-I (../mathlib/Algorithm/QuaternionEKF.h)(0x662CCBC4)
+I (../mathlib/Algorithm/QuaternionEKF.h)(0x67BAC223)
 I (../mathlib/kalman_filter.h)(0x671157AC)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (..\Bsp\bsp_dwt.h)(0x6706E5D8)
@@ -1356,8 +1356,8 @@ I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
 I (..\mathlib\data_processing.h)(0x67B9E6EC)
 F (..\mathlib\pid.h)(0x671156C0)()
-F (..\mathlib\Algorithm\QuaternionEKF.c)(0x67B9D819)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\quaternionekf.o --omf_browse .\taurus_imu_icm_test\quaternionekf.crf --depend .\taurus_imu_icm_test\quaternionekf.d)
-I (..\mathlib\Algorithm\QuaternionEKF.h)(0x662CCBC4)
+F (..\mathlib\Algorithm\QuaternionEKF.c)(0x67BAC20E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\quaternionekf.o --omf_browse .\taurus_imu_icm_test\quaternionekf.crf --depend .\taurus_imu_icm_test\quaternionekf.d)
+I (..\mathlib\Algorithm\QuaternionEKF.h)(0x67BAC223)
 I (../mathlib/kalman_filter.h)(0x671157AC)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x6713A7A0)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x67374CAE)
@@ -1395,7 +1395,7 @@ I (../dsp/Include/arm_math.h)(0x662CCBC4)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
-F (..\mathlib\Algorithm\QuaternionEKF.h)(0x662CCBC4)()
+F (..\mathlib\Algorithm\QuaternionEKF.h)(0x67BAC223)()
 F (..\mathlib\Mahony.c)(0x67A11FCD)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\mahony.o --omf_browse .\taurus_imu_icm_test\mahony.crf --depend .\taurus_imu_icm_test\mahony.d)
 I (..\mathlib\Mahony.h)(0x67A11FC9)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\stdint.h)(0x66EA6C6E)

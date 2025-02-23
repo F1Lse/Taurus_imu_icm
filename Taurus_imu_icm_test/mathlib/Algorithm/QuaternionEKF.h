@@ -71,5 +71,5 @@ extern float chiSquare;
 extern float ChiSquareTestThreshold;
 void IMU_QuaternionEKF_Init(float process_noise1, float process_noise2, float measure_noise, float lambda, float lpf);
 void IMU_QuaternionEKF_Update(float gx, float gy, float gz, float ax, float ay, float az, float dt);
-
+static float BranchlessNormalizeYaw(float yaw);
 #endif

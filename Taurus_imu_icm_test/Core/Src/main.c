@@ -159,6 +159,7 @@ GyroFilter_Init(&gf);
 	IMU_Data.AccelScale = Bias[3];
 	IMU_Data.TempWhenCali = Bias[4]; 
 	califlag = 1;
+	bias_gyro_mode = Calibration_successful_mode;
 #endif		
 
 
@@ -175,6 +176,7 @@ GyroFilter_Init(&gf);
     /* USER CODE END WHILE */
 		
     /* USER CODE BEGIN 3 */
+		
       if(init_flag)
       IMU_AHRS_Calcu_task();
 			
@@ -187,7 +189,7 @@ GyroFilter_Init(&gf);
 		if(	led_count % 1000 == 0)
 			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
 				
-			DWT_Delay(0.001f);
+			DWT_Delay(0.00065f);
 						
   }
   /* USER CODE END 3 */
