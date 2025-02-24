@@ -61,7 +61,9 @@ void IMU_AHRS_Calcu_task(void const * argument){
     {
        
 			count++;
+			taskENTER_CRITICAL();
 		bsp_IcmGetRawData(&IMU_Data);
+			taskEXIT_CRITICAL();
 		ICM42688P_ConvertToPhysical(&IMU_Data);
     const float gravity[3] = {0, 0, 9.81f};
 		dt = DWT_GetDeltaT(&INS_DWT_Count);
