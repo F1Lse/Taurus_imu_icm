@@ -10,7 +10,7 @@ typedef struct{
         struct
         {
             float pit;
-            float wx;
+            float wy;
         }e;
     } pit_msg;//pit
     union
@@ -28,7 +28,7 @@ typedef struct{
         struct
         {
             float rol;
-            float wy;
+            float wx;
         } e;
     } rol_msg;//roll
 }imu_msg_t;	

@@ -46,7 +46,7 @@ I (../Bsp/bsp_imu.h)(0x67BC05F5)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
 I (../Bsp/bsp_flash.h)(0x67BC029D)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\string.h)(0x588B8344)
-I (../Communication/can_comm.h)(0x67BAC364)
+I (../Communication/can_comm.h)(0x67BC2DE7)
 I (../Bsp/bsp_PWM.h)(0x67374CAE)
 I (../mathlib/pid.h)(0x671156C0)
 I (../mathlib/Mahony.h)(0x67A11FC9)
@@ -1073,7 +1073,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x6713A7A0)
 F (..\Bsp\bsp_dwt.h)(0x6706E5D8)()
-F (..\Bsp\bsp_imu.c)(0x67BC05F5)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\bsp_imu.o --omf_browse .\taurus_imu_icm_test\bsp_imu.crf --depend .\taurus_imu_icm_test\bsp_imu.d)
+F (..\Bsp\bsp_imu.c)(0x67BC2E12)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\bsp_imu.o --omf_browse .\taurus_imu_icm_test\bsp_imu.crf --depend .\taurus_imu_icm_test\bsp_imu.d)
 I (..\Bsp\bsp_imu.h)(0x67BC05F5)
 I (../Core/Inc/main.h)(0x670F8A3D)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x6713A7A0)
@@ -1122,7 +1122,7 @@ I (..\Bsp\bsp_dwt.h)(0x6706E5D8)
 I (../mathlib/pid.h)(0x671156C0)
 I (..\Bsp\bsp_PWM.h)(0x67374CAE)
 I (../Core/Inc/tim.h)(0x67374CAE)
-I (../Communication/can_comm.h)(0x67BAC364)
+I (../Communication/can_comm.h)(0x67BC2DE7)
 F (..\Bsp\bsp_imu.h)(0x67BC05F5)()
 F (..\Bsp\bsp_PWM.c)(0x67374CAE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\bsp_pwm.o --omf_browse .\taurus_imu_icm_test\bsp_pwm.crf --depend .\taurus_imu_icm_test\bsp_pwm.d)
 I (..\Bsp\bsp_PWM.h)(0x67374CAE)
@@ -1412,7 +1412,7 @@ I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (C:\Users\zzzwj\AppData\Local\Keil_v5\ARM\ARMCC\include\math.h)(0x588B8344)
 F (..\dsp\arm_cortexM4lf_math.lib)(0x662CCBC4)()
 F (..\Communication\can_comm.c)(0x67BAC364)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../Compoents -I ../mathlib -I ../dsp -I ../dsp/Include -I ../Bsp -I ../mathlib/Algorithm -I ../Communication-I.\RTE\_Taurus_imu_icm_test-IC:\Users\zzzwj\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\zzzwj\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.6.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include-D__UVISION_VERSION="540" -DSTM32G431xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G431xx -DARM_MATH_CM4 -D__FPU_PRESENT="1U" -D__FPU_USED="1U"-o .\taurus_imu_icm_test\can_comm.o --omf_browse .\taurus_imu_icm_test\can_comm.crf --depend .\taurus_imu_icm_test\can_comm.d)
-I (..\Communication\can_comm.h)(0x67BAC364)
+I (..\Communication\can_comm.h)(0x67BC2DE7)
 I (../Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g4xx.h)(0x6713A7A0)
 I (../Drivers/CMSIS/Device/ST/STM32G4xx/Include/stm32g431xx.h)(0x6713A7A0)
 I (../Drivers/CMSIS/Include/core_cm4.h)(0x6713A77A)
@@ -1447,4 +1447,4 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x6713A7A0)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x6713A7A0)
 I (../Core/Inc/fdcan.h)(0x67374CAE)
 I (../Core/Inc/main.h)(0x670F8A3D)
-F (..\Communication\can_comm.h)(0x67BAC364)()
+F (..\Communication\can_comm.h)(0x67BC2DE7)()
