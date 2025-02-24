@@ -62,7 +62,7 @@ extern bias_gyro_mode_e bias_gyro_mode;
 
 void Calibrate_MPU_Offset(IMU_Data_t *ICM42688);
 
-void IMU_AHRS_Calcu_task(void);
+void IMU_AHRS_Calcu_task(void const * argument);
 void BodyFrameToEarthFrame(const float *vecBF, float *vecEF, float *q);
 void EarthFrameToBodyFrame(const float *vecEF, float *vecBF, float *q);
 void ComplementaryFilter(const IMU_Data_t *ICM42688 ,float alpha, float dt);

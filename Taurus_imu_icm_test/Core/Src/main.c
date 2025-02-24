@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "dma.h"
 #include "fdcan.h"
 #include "spi.h"
@@ -35,8 +36,6 @@
 #include "bsp_PWM.h"
 #include "pid.h"
 #include "can_comm.h"
-#include "Mahony.h"
-#include "ekf_attitude.h"
 #include "data_processing.h"
 /* USER CODE END Includes */
 
@@ -57,18 +56,7 @@
 uint32_t dwt_count;
 float dt_can;
 float TempWheninit = 38.0f;
-static uint32_t led_count;
-uint32_t hubu_DWT_Count;
-		    float alpha = 0.98f;  // 滤波系数（陀螺仪权重）
-				
-				    
-    // 获取欧拉角
-    float roll_Mahony, pitch_Mahony, yaw_Mahony;
-		float roll_ekf, pitch_ekf, yaw_ekf;
-	MahonyFilter filter;
-	
-EKF_Instance ekf;
-GyroFilter gf;
+static uint32_t led_count;		
 
 
 /* USER CODE END PM */
@@ -81,6 +69,7 @@ GyroFilter gf;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -139,12 +128,6 @@ int main(void)
 	
 	HAL_Delay(100);
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
-	
-//			// 初始化（采样率100Hz，参数需调试）
-//		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
-//		 // 初始化EKF（200Hz采样率）
-//    EKF_Init(&ekf, 0.001f); 
-GyroFilter_Init(&gf);
 #ifdef Calibrate
 			
 	Calibrate_MPU_Offset(&IMU_Data);
@@ -169,27 +152,35 @@ GyroFilter_Init(&gf);
    HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
+  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-		
+
     /* USER CODE BEGIN 3 */
-		
-      if(init_flag)
-      IMU_AHRS_Calcu_task();
+//		
+//      if(init_flag)
+//      IMU_AHRS_Calcu_task();
 			
 			
-		if(bias_gyro_mode == Calibration_error_mode)
-			led_count +=10;
-		else
-			led_count +=1;
-		
-		if(	led_count % 1000 == 0)
-			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
-				
-			DWT_Delay(0.00065f);
+//		if(bias_gyro_mode == Calibration_error_mode)
+//			led_count +=10;
+//		else
+//			led_count +=1;
+//		
+//		if(	led_count % 1000 == 0)
+//			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
+//				
+//			DWT_Delay(0.00065f);
 						
   }
   /* USER CODE END 3 */

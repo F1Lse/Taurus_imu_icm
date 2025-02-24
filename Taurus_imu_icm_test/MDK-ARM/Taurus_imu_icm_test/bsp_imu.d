@@ -51,3 +51,17 @@
 .\taurus_imu_icm_test\bsp_imu.o: ..\Bsp\bsp_PWM.h
 .\taurus_imu_icm_test\bsp_imu.o: ../Core/Inc/tim.h
 .\taurus_imu_icm_test\bsp_imu.o: ../Communication/can_comm.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Core/Inc/FreeRTOSConfig.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+.\taurus_imu_icm_test\bsp_imu.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

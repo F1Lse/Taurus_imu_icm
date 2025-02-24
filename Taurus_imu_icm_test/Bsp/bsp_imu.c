@@ -18,6 +18,7 @@
 #include "pid.h"
 #include "bsp_PWM.h"
 #include "can_comm.h"
+#include "cmsis_os.h"
 
 #define gNORM 9.83293118f
 float icm088_AccelScale = 9.81f / gNORM;
@@ -45,17 +46,21 @@ float pitch_hubu,roll_hubu,yaw_hubu;
 /* IMU½á¹¹Ìå */
 INS_t INS; 
 
-void IMU_AHRS_Calcu_task(void){
+void IMU_AHRS_Calcu_task(void const * argument){
 		
 		static uint32_t count;
 		static int16_t temp;
-		count++;
-		
 		
 		if(!imu_init)
 	  {PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);		
 		imu_init = 1;
 		}
+		
+		    uint32_t thread_wake_time = osKernelSysTick();
+    for(;;)
+    {
+       
+			count++;
 		bsp_IcmGetRawData(&IMU_Data);
 		ICM42688P_ConvertToPhysical(&IMU_Data);
     const float gravity[3] = {0, 0, 9.81f};
@@ -119,6 +124,10 @@ void IMU_AHRS_Calcu_task(void){
 					pid_calc(&pid_temperature,temp,IMU_Data.TempWhenCali);
 					TIM_Set_PWM(&htim1, TIM_CHANNEL_1,pid_temperature.pos_out);
 				}
+				
+				
+				 osDelayUntil(&thread_wake_time, 1);
+			}
 }
 
 /**
@@ -176,7 +185,7 @@ void Calibrate_MPU_Offset(IMU_Data_t *ICM42688)
 	{
 		bsp_IcmGetRawData(ICM42688);		
 
-		if(fabs(ICM42688->Gyro_raw[0])>=25||fabs(ICM42688->Gyro_raw[1])>=25||fabs(ICM42688->Gyro_raw[2])>=25)
+		if(fabs(ICM42688->Gyro_raw[0])>=30||fabs(ICM42688->Gyro_raw[1])>=30||fabs(ICM42688->Gyro_raw[2])>=30)
 		{
 		   bias_gyro_mode = Calibration_error_mode;
 			
