@@ -59,13 +59,13 @@ float dt_can;
 float TempWheninit = 38.0f;
 static uint32_t led_count;
 uint32_t hubu_DWT_Count;
-		    float alpha = 0.98f;  // 滤波系数（陀螺仪权重）
+float alpha = 0.98f;  // 滤波系数（陀螺仪权重）
 				
 				    
-    // 获取欧拉角
-    float roll_Mahony, pitch_Mahony, yaw_Mahony;
-		float roll_ekf, pitch_ekf, yaw_ekf;
-	MahonyFilter filter;
+// 获取欧拉角
+float roll_Mahony, pitch_Mahony, yaw_Mahony;
+float roll_ekf, pitch_ekf, yaw_ekf;
+MahonyFilter filter;
 	
 EKF_Instance ekf;
 GyroFilter gf;
@@ -144,6 +144,7 @@ int main(void)
 //		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
 //		 // 初始化EKF（200Hz采样率）
 //    EKF_Init(&ekf, 0.001f); 
+	
 GyroFilter_Init(&gf);
 #ifdef Calibrate
 			
@@ -265,9 +266,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM3)
 	{
 	dt_can = DWT_GetDeltaT(&dwt_count);
-	can_std_transmit(&hfdcan1,0x011,imu_msg_send.pit_msg.array);
-	can_std_transmit(&hfdcan1,0x012,imu_msg_send.yaw_msg.array);
-//	can_std_transmit(&hfdcan1,0x003,imu_msg_send.rol_msg.array);	
+//	can_std_transmit(&hfdcan1,0x011,imu_msg_send.pit_msg.array);
+//	can_std_transmit(&hfdcan1,0x012,imu_msg_send.yaw_msg.array);
+	
+	//sentry
+	can_std_transmit(&hfdcan1,0x001,imu_msg_send.gim_w_msg.array);
+	can_std_transmit(&hfdcan1,0x002,imu_msg_send.gim_angle_msg.array);		
+
 	}
   /* USER CODE END Callback 1 */
 }

@@ -201,6 +201,7 @@ void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
  * @param accel_range 加速度计量程
  * @param gyro_range 陀螺仪量程
  */
+float hhaijdh;
 void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
     // 加速度转换（单位：m/s²）
 		float un_filtered[3];
@@ -211,7 +212,6 @@ void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
 
     // 陀螺仪转换（单位：rad/s）
     float gyro_scale = (1.0f / gyroSensitivity) * (PI / 180.0f);
-	
 	  un_filtered[0]=  ICM42688->Gyro_raw[0] * gyro_scale;
     un_filtered[1] = ICM42688->Gyro_raw[1] * gyro_scale;
     un_filtered[2] = ICM42688->Gyro_raw[2] * gyro_scale;

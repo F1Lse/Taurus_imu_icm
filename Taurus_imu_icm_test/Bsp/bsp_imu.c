@@ -113,7 +113,12 @@ void IMU_AHRS_Calcu_task(void){
 				
 				imu_msg_send.yaw_msg.e.yaw = INS.Yaw;
 				imu_msg_send.yaw_msg.e.wz = INS.Gyro[Z_axis];
-
+				
+				imu_msg_send.gim_w_msg.e.wy = INS.Gyro[Y_axis];
+				imu_msg_send.gim_w_msg.e.wz = INS.Gyro[Z_axis];
+				
+				imu_msg_send.gim_angle_msg.e.pit = INS.Pitch;
+				imu_msg_send.gim_angle_msg.e.yaw = INS.Yaw;
 				
 				if(count % 2 == 0)
 				{

@@ -31,6 +31,25 @@ typedef struct{
             float wx;
         } e;
     } rol_msg;//roll
+				union
+    {
+		 uint8_t array[8];
+        struct
+        {
+            float wy;
+            float wz;
+        } e;
+    } gim_w_msg;//roll
+				union
+    {
+		 uint8_t array[8];
+        struct
+        {
+            float pit;
+            float yaw;
+        } e;
+    } gim_angle_msg;//roll
+
 }imu_msg_t;	
 
 void can_comm_init(void);
