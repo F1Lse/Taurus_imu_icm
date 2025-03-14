@@ -19,15 +19,16 @@
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h \
+  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_iwdg.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
-  ..\Core\Inc\dma.h ..\Core\Inc\fdcan.h ..\Core\Inc\spi.h \
-  ..\Core\Inc\tim.h ..\Core\Inc\gpio.h ..\Bsp\bsp_dwt.h \
-  ..\Compoents\ICM42688_driver.h ..\Bsp\bsp_imu.h ..\Bsp\bsp_flash.h \
-  ..\Communication\can_comm.h ..\Bsp\bsp_PWM.h ..\mathlib\pid.h \
-  ..\mathlib\Mahony.h ..\mathlib\ekf_attitude.h \
+  ..\Core\Inc\dma.h ..\Core\Inc\fdcan.h ..\Core\Inc\iwdg.h \
+  ..\Core\Inc\spi.h ..\Core\Inc\tim.h ..\Core\Inc\gpio.h \
+  ..\Bsp\bsp_dwt.h ..\Compoents\ICM42688_driver.h ..\Bsp\bsp_imu.h \
+  ..\Bsp\bsp_flash.h ..\Communication\can_comm.h ..\Bsp\bsp_PWM.h \
+  ..\mathlib\pid.h ..\mathlib\Mahony.h ..\mathlib\ekf_attitude.h \
   ..\dsp\Include\arm_math.h ..\mathlib\data_processing.h

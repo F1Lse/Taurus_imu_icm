@@ -20,6 +20,7 @@
 #include "main.h"
 #include "dma.h"
 #include "fdcan.h"
+#include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
 #include "gpio.h"
@@ -112,6 +113,7 @@ int main(void)
   MX_TIM1_Init();
   MX_FDCAN1_Init();
   MX_TIM3_Init();
+
   /* USER CODE BEGIN 2 */
 	
   DWT_Init(170);
@@ -152,13 +154,13 @@ int main(void)
     /*使能定时器1中断*/
    HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
-
+	  MX_IWDG_Init();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-		
+
     /* USER CODE BEGIN 3 */
 		
       if(init_flag)
@@ -173,6 +175,8 @@ int main(void)
 		if(	led_count % 1000 == 0)
 			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
 				
+		HAL_IWDG_Refresh(&hiwdg);
+		
 			DWT_Delay(0.00065f);
 						
   }
@@ -195,8 +199,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
