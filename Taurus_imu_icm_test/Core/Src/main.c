@@ -253,8 +253,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //	can_std_transmit(&hfdcan1,0x012,imu_msg_send.yaw_msg.array);
 	
 	//sentry
-	can_std_transmit(&hfdcan1,0x001,imu_msg_send.gim_w_msg.array);
-	can_std_transmit(&hfdcan1,0x002,imu_msg_send.gim_angle_msg.array);		
+	can_std_transmit(&hfdcan1,0x008,imu_msg_send.gim_w_msg.array);
+	can_std_transmit(&hfdcan1,0x003,imu_msg_send.gim_angle_msg.array);		
 
 	}
   /* USER CODE END Callback 1 */
