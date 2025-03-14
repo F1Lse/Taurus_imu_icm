@@ -104,7 +104,7 @@ void IMU_AHRS_Calcu_task(void){
         INS.YawTotalAngle = QEKF_INS.YawTotalAngle;  
 				
 				//待发送数据			
-								
+				//按坐标轴分
 				imu_msg_send.rol_msg.e.rol = INS.Roll;
 				imu_msg_send.rol_msg.e.wx = INS.Gyro[X_axis];
 				
@@ -113,9 +113,10 @@ void IMU_AHRS_Calcu_task(void){
 				
 				imu_msg_send.yaw_msg.e.yaw = INS.Yaw;
 				imu_msg_send.yaw_msg.e.wz = INS.Gyro[Z_axis];
+				//按类型分
 				
-				imu_msg_send.gim_w_msg.e.wy = INS.Gyro[Y_axis];
-				imu_msg_send.gim_w_msg.e.wz = INS.Gyro[Z_axis];
+				imu_msg_send.gim_w_msg.e.wy = INS.Gyro[Y_axis]/gyro_scale;
+				imu_msg_send.gim_w_msg.e.wz = INS.Gyro[Z_axis]/gyro_scale;
 				
 				imu_msg_send.gim_angle_msg.e.pit = INS.Pitch;
 				imu_msg_send.gim_angle_msg.e.yaw = INS.Yaw;

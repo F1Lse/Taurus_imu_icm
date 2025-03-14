@@ -58,18 +58,6 @@ uint32_t dwt_count;
 float dt_can;
 float TempWheninit = 38.0f;
 static uint32_t led_count;
-uint32_t hubu_DWT_Count;
-float alpha = 0.98f;  // 滤波系数（陀螺仪权重）
-				
-				    
-// 获取欧拉角
-float roll_Mahony, pitch_Mahony, yaw_Mahony;
-float roll_ekf, pitch_ekf, yaw_ekf;
-MahonyFilter filter;
-	
-EKF_Instance ekf;
-GyroFilter gf;
-
 
 /* USER CODE END PM */
 
@@ -140,12 +128,7 @@ int main(void)
 	HAL_Delay(100);
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
 	
-//			// 初始化（采样率100Hz，参数需调试）
-//		Mahony_Init(&filter, 1000.0f, 5.0f, 0.01f);
-//		 // 初始化EKF（200Hz采样率）
-//    EKF_Init(&ekf, 0.001f); 
-	
-GyroFilter_Init(&gf);
+
 #ifdef Calibrate
 			
 	Calibrate_MPU_Offset(&IMU_Data);
