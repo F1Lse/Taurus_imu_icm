@@ -175,7 +175,7 @@ int main(void)
 		if(	led_count % 1000 == 0)
 			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
 				
-		HAL_IWDG_Refresh(&hiwdg);
+		
 		
 			DWT_Delay(0.00065f);
 						
