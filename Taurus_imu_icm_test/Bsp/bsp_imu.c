@@ -125,7 +125,7 @@ void IMU_AHRS_Calcu_task(void){
 				{
 					bsp_IcmGetTemperature(&temp);
 					pid_calc(&pid_temperature,temp,IMU_Data.TempWhenCali);
-					TIM_Set_PWM(&htim1, TIM_CHANNEL_1,pid_temperature.pos_out);
+//					TIM_Set_PWM(&htim1, TIM_CHANNEL_1,pid_temperature.pos_out);
 				}
 }
 
