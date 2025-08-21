@@ -18,9 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "dma.h"
 #include "fdcan.h"
+#include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
 #include "gpio.h"
@@ -36,6 +36,8 @@
 #include "bsp_PWM.h"
 #include "pid.h"
 #include "can_comm.h"
+#include "Mahony.h"
+#include "ekf_attitude.h"
 #include "data_processing.h"
 /* USER CODE END Includes */
 
@@ -56,8 +58,7 @@
 uint32_t dwt_count;
 float dt_can;
 float TempWheninit = 38.0f;
-static uint32_t led_count;		
-
+static uint32_t led_count;
 
 /* USER CODE END PM */
 
@@ -69,7 +70,6 @@ static uint32_t led_count;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -113,6 +113,7 @@ int main(void)
   MX_TIM1_Init();
   MX_FDCAN1_Init();
   MX_TIM3_Init();
+
   /* USER CODE BEGIN 2 */
 	
   DWT_Init(170);
@@ -128,6 +129,8 @@ int main(void)
 	
 	HAL_Delay(100);
 	PID_struct_init(&pid_temperature,POSITION_PID,2000, 300,1000, 20,0);	
+	
+
 #ifdef Calibrate
 			
 	Calibrate_MPU_Offset(&IMU_Data);
@@ -151,15 +154,7 @@ int main(void)
     /*使能定时器1中断*/
    HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
-
-  /* Call init function for freertos objects (in cmsis_os2.c) */
-  MX_FREERTOS_Init();
-
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
-
+	  MX_IWDG_Init();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -167,20 +162,22 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//		
-//      if(init_flag)
-//      IMU_AHRS_Calcu_task();
+		
+      if(init_flag)
+      IMU_AHRS_Calcu_task();
 			
 			
-//		if(bias_gyro_mode == Calibration_error_mode)
-//			led_count +=10;
-//		else
-//			led_count +=1;
-//		
-//		if(	led_count % 1000 == 0)
-//			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
-//				
-//			DWT_Delay(0.00065f);
+		if(bias_gyro_mode == Calibration_error_mode)
+			led_count +=10;
+		else
+			led_count +=1;
+		
+		if(	led_count % 1000 == 0)
+			 HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);							
+				
+		
+		
+			DWT_Delay(0.00065f);
 						
   }
   /* USER CODE END 3 */
@@ -202,8 +199,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
@@ -256,9 +254,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM3)
 	{
 	dt_can = DWT_GetDeltaT(&dwt_count);
-	can_std_transmit(&hfdcan1,0x001,imu_msg_send.pit_msg.array);
-	can_std_transmit(&hfdcan1,0x002,imu_msg_send.yaw_msg.array);
-//	can_std_transmit(&hfdcan1,0x003,imu_msg_send.rol_msg.array);	
+	can_std_transmit(&hfdcan1,0x011,imu_msg_send.pit_msg.array);
+	can_std_transmit(&hfdcan1,0x012,imu_msg_send.yaw_msg.array);
+	
+	//sentry
+//	can_std_transmit(&hfdcan1,0x008,imu_msg_send.gim_w_msg.array);
+//	can_std_transmit(&hfdcan1,0x003,imu_msg_send.gim_angle_msg.array);		
+
 	}
   /* USER CODE END Callback 1 */
 }

@@ -18,7 +18,8 @@ extern GyroFilter gf;
 
 float accSensitivity ;// 加速计灵敏度
 float gyroSensitivity ;// 角速度计灵敏度
-
+float accel_scale;
+float gyro_scale;
 
 static void ICM42688_write_single_reg(uint8_t reg, uint8_t data);
 static void ICM42688_read_single_reg(uint8_t reg, uint8_t *return_data);
@@ -201,15 +202,17 @@ void bsp_IcmGetRawData(IMU_Data_t *ICM42688)
  * @param accel_range 加速度计量程
  * @param gyro_range 陀螺仪量程
  */
+
 void ICM42688P_ConvertToPhysical(IMU_Data_t *ICM42688) {
     // 加速度转换（单位：m/s²）
-    float accel_scale = 9.81f / accSensitivity;
+		
+		accel_scale = 9.81f / accSensitivity;
     ICM42688->Accel[0] = ICM42688->Accel_raw[0] * accel_scale;
     ICM42688->Accel[1]=  ICM42688->Accel_raw[1] * accel_scale;
     ICM42688->Accel[2] = ICM42688->Accel_raw[2] * accel_scale;
 
     // 陀螺仪转换（单位：rad/s）
-    float gyro_scale = (1.0f / gyroSensitivity) * (PI / 180.0f);
+     gyro_scale = (1.0f / gyroSensitivity) * (PI / 180.0f);
 	  ICM42688->Gyro[0] = ICM42688->Gyro_raw[0] * gyro_scale;
     ICM42688->Gyro[1] = ICM42688->Gyro_raw[1] * gyro_scale;
     ICM42688->Gyro[2] = ICM42688->Gyro_raw[2] * gyro_scale;

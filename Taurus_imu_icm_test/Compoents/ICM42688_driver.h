@@ -54,5 +54,7 @@ int16_t ICM42688_init(void);
 
 extern uint8_t init_flag;
 extern IMU_Data_t IMU_Data;
+extern float accel_scale;
+extern float gyro_scale;
 extern int16_t temp;
 #endif

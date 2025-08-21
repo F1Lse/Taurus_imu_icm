@@ -27,6 +27,7 @@
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ex.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ramfunc.h
+.\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_iwdg.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h
 .\taurus_imu_icm_test\main.o: ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h
@@ -49,6 +50,7 @@
 .\taurus_imu_icm_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/dma.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/fdcan.h
+.\taurus_imu_icm_test\main.o: ../Core/Inc/iwdg.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/spi.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/tim.h
 .\taurus_imu_icm_test\main.o: ../Core/Inc/gpio.h
